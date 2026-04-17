@@ -1,86 +1,185 @@
-<mat-toolbar color="primary">
+<div class="principal-shell">
 
-  <span class="title">
-    Sistema eSueldos
-  </span>
+  <header class="topbar">
 
-  <span class="spacer"></span>
-
-  <!-- Logout -->
-  <button mat-button color="warn" routerLink="/auth/login">
-    <mat-icon>logout</mat-icon>
-    Salir
-  </button>
-
-</mat-toolbar>
-
-
-<!-- CONTENIDO -->
-<div class="content">
-
-  <h1 class="welcome-title">
-    Bienvenido al Sistema eSueldos
-  </h1>
-
-  <p class="welcome-subtitle">
-    Selecciona una opción para comenzar
-  </p>
-
-  <!-- BOTONES PRINCIPALES -->
-  <div class="cards">
-
-    <!-- PEFIL -->
-    <mat-card routerLink="/profile" class="card-click">
-
-      <div class="card-icon">
-        <mat-icon>people</mat-icon>
+    <div class="brand-block">
+      <div class="brand-logo">
+        <img
+          src="https://media.licdn.com/dms/image/v2/D4D0BAQGibhoMeCL-mg/company-logo_200_200/company-logo_200_200/0/1667320508791/e_sueldos_logo?e=2147483647&v=beta&t=6BpHD4ZVbBNymqB5aEkJNEXyJ-0qGr2At_F6mEePRAw"
+          alt="Logo eSueldos"
+        >
       </div>
 
-      <mat-card-title>
-        Mi Perfil
-      </mat-card-title>
+      <div>
+        <p class="brand-kicker">Plataforma empresarial</p>
+        <h1 class="brand-title">eSueldos</h1>
+      </div>
+    </div>
 
-      <mat-card-content>
-        Gestión de perfil.
-      </mat-card-content>
+    <nav class="topbar-actions">
+      <a mat-stroked-button routerLink="/profile" class="header-button secondary-button">
+        <mat-icon>person</mat-icon>
+        Mi perfil
+      </a>
 
-    </mat-card>
+      <a mat-flat-button routerLink="/auth/login" class="header-button danger-button">
+        <mat-icon>logout</mat-icon>
+        Salir
+      </a>
+    </nav>
 
+  </header>
 
-    <!-- PRODUCTOS -->
-    <mat-card routerLink="/products" class="card-click">
+  <main class="dashboard-layout">
 
-      <div class="card-icon">
-        <mat-icon>inventory</mat-icon>
+    <section class="hero-panel">
+      <div class="hero-copy">
+        <p class="hero-eyebrow">Gestion centralizada</p>
+
+        <h2 class="hero-title">
+          Administra sueldos, usuarios y operaciones desde un solo lugar
+        </h2>
+
+        <p class="hero-description">
+          Un panel moderno para organizar tareas clave del negocio con accesos
+          directos, mejor visibilidad y una experiencia de trabajo más clara.
+        </p>
+
+        <div class="hero-actions">
+          <a mat-flat-button routerLink="/users" class="hero-primary">
+            <mat-icon>group</mat-icon>
+            Administrar usuarios
+          </a>
+
+          <a mat-stroked-button routerLink="/products" class="hero-secondary">
+            <mat-icon>inventory_2</mat-icon>
+            Ver productos
+          </a>
+        </div>
       </div>
 
-      <mat-card-title>
-        Productos
-      </mat-card-title>
+      <div class="hero-side">
+        <div class="hero-stat-card">
+          <p class="stat-label">Estado del sistema</p>
+          <p class="stat-value">Operativo</p>
+          <p class="stat-note">Panel listo para continuar con la gestión diaria</p>
+        </div>
 
-      <mat-card-content>
-        Gestión de productos.
-      </mat-card-content>
+        <div class="hero-mini-grid">
+          <article class="mini-card">
+            <span class="mini-icon blue">
+              <mat-icon>badge</mat-icon>
+            </span>
+            <div>
+              <h3>Usuarios</h3>
+              <p>Altas, edición y control de accesos.</p>
+            </div>
+          </article>
 
-    </mat-card>
+          <article class="mini-card">
+            <span class="mini-icon amber">
+              <mat-icon>payments</mat-icon>
+            </span>
+            <div>
+              <h3>Sueldos</h3>
+              <p>Operación enfocada en orden y trazabilidad.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-    <!-- USUARIOS -->
-    <mat-card routerLink="/users" class="card-click">
+    <section class="summary-strip">
+      <article class="summary-card">
+        <span class="summary-number">01</span>
+        <div>
+          <h3>Flujo claro</h3>
+          <p>Accesos rápidos para las tareas más usadas del sistema.</p>
+        </div>
+      </article>
 
-      <div class="card-icon">
-        <mat-icon>group</mat-icon>
+      <article class="summary-card">
+        <span class="summary-number">02</span>
+        <div>
+          <h3>Interfaz profesional</h3>
+          <p>Mejor jerarquía visual para trabajar con menos fricción.</p>
+        </div>
+      </article>
+
+      <article class="summary-card">
+        <span class="summary-number">03</span>
+        <div>
+          <h3>Navegación simple</h3>
+          <p>Las secciones clave quedan visibles desde el inicio.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="access-section">
+      <div class="section-heading">
+        <p class="section-eyebrow">Accesos principales</p>
+        <h2>Elige una sección para empezar</h2>
       </div>
 
-      <mat-card-title>
-        Usuarios
-      </mat-card-title>
+      <div class="access-grid">
 
-      <mat-card-content>
-        Administración de usuarios.
-      </mat-card-content>
+        <mat-card routerLink="/profile" class="access-card profile-card">
+          <div class="access-icon">
+            <mat-icon>person</mat-icon>
+          </div>
 
-    </mat-card>
+          <div class="access-copy">
+            <p class="access-kicker">Cuenta</p>
+            <mat-card-title>Mi perfil</mat-card-title>
+            <mat-card-content>
+              Actualiza tu información y revisa tus datos personales.
+            </mat-card-content>
+          </div>
 
-  </div>
+          <div class="access-arrow">
+            <mat-icon>north_east</mat-icon>
+          </div>
+        </mat-card>
+
+        <mat-card routerLink="/products" class="access-card products-card">
+          <div class="access-icon">
+            <mat-icon>inventory_2</mat-icon>
+          </div>
+
+          <div class="access-copy">
+            <p class="access-kicker">Operaciones</p>
+            <mat-card-title>Productos</mat-card-title>
+            <mat-card-content>
+              Gestiona productos y mantén visible la información operativa.
+            </mat-card-content>
+          </div>
+
+          <div class="access-arrow">
+            <mat-icon>north_east</mat-icon>
+          </div>
+        </mat-card>
+
+        <mat-card routerLink="/users" class="access-card users-card">
+          <div class="access-icon">
+            <mat-icon>groups</mat-icon>
+          </div>
+
+          <div class="access-copy">
+            <p class="access-kicker">Administración</p>
+            <mat-card-title>Usuarios</mat-card-title>
+            <mat-card-content>
+              Crea, edita y organiza usuarios con una vista centralizada.
+            </mat-card-content>
+          </div>
+
+          <div class="access-arrow">
+            <mat-icon>north_east</mat-icon>
+          </div>
+        </mat-card>
+
+      </div>
+    </section>
+
+  </main>
 
 </div>
