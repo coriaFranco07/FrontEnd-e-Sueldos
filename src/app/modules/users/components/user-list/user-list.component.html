@@ -1,0 +1,130 @@
+<div class="user-list-container">
+  <section class="page-header">
+    <div>
+      <p class="eyebrow">Panel administrativo</p>
+      <h1>Gestión de usuarios</h1>
+      <p class="page-description">Filtra por nombre o rol, revisa el estado de verificación y administra usuarios desde una tabla clara y moderna.</p>
+    </div>
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="goBack()" matTooltip="Volver atrás" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+        Volver
+      </button>
+      <div class="header-badge">
+        <span>Usuarios</span>
+        <strong>{{ totalResults || 0 }}</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="filters-section">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Nombre exacto</mat-label>
+      <input matInput [formControl]="nameFilter" placeholder="Ej. Juan Perez">
+      <mat-icon matPrefix>search</mat-icon>
+      <button mat-icon-button matSuffix *ngIf="nameFilter.value" (click)="nameFilter.reset()" matTooltip="Limpiar">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Rol</mat-label>
+      <mat-select [formControl]="roleFilter">
+        <mat-option value="">Todos los roles</mat-option>
+        <mat-option value="admin">👑 Admin</mat-option>
+        <mat-option value="user">👤 Usuario</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-stroked-button color="primary" class="reset-btn" (click)="resetFilters()" matTooltip="Resetear filtros">
+      <mat-icon>refresh</mat-icon>
+      Limpiar filtros
+    </button>
+  </section>
+
+  <section class="table-panel">
+    <div class="table-toolbar">
+      <div>
+        <span class="toolbar-title">Usuarios activos</span>
+        <p class="toolbar-subtitle">Ordenados por los valores que elijas en la tabla.</p>
+      </div>
+      <div class="toolbar-actions">
+        <button mat-flat-button color="primary" class="create-btn" (click)="openCreateDialog()">
+          <mat-icon>person_add</mat-icon>
+          Nuevo usuario
+        </button>
+        <span class="toolbar-chip">Total: {{ totalResults || 0 }}</span>
+      </div>
+    </div>
+
+    <div class="table-scroll">
+      <table mat-table [dataSource]="dataSource" matSort class="user-table" *ngIf="!isLoading || dataSource.data.length > 0">
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+          <td mat-cell *matCellDef="let user" class="user-name">{{ user.name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+          <td mat-cell *matCellDef="let user" class="user-email">{{ user.email }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Rol</th>
+          <td mat-cell *matCellDef="let user">
+            <mat-chip [ngClass]="user.role === 'admin' ? 'role-chip admin' : 'role-chip user'">
+              {{ user.role === 'admin' ? 'Admin' : 'Usuario' }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="isEmailVerified">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Verificado</th>
+          <td mat-cell *matCellDef="let user" [ngClass]="user.isEmailVerified ? 'verification-badge verified' : 'verification-badge unverified'">
+            <mat-icon aria-hidden="false">{{ user.isEmailVerified ? 'check_circle' : 'cancel' }}</mat-icon>
+            <span>{{ user.isEmailVerified ? 'Verificado' : 'No verificado' }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="actions-header">Acciones</th>
+          <td mat-cell *matCellDef="let user" class="actions-cell">
+            <button mat-flat-button color="primary" class="action-btn edit" (click)="editUser(user)" matTooltip="Editar usuario">
+              <mat-icon>edit</mat-icon>
+              Editar
+            </button>
+            <button mat-flat-button color="warn" class="action-btn delete" (click)="deleteUser(user)" matTooltip="Eliminar usuario">
+              <mat-icon>delete</mat-icon>
+              Eliminar
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <div *ngIf="isLoading && dataSource.data.length === 0" class="empty-state loading-state">
+        <mat-progress-spinner diameter="50" mode="indeterminate"></mat-progress-spinner>
+        <p>Cargando usuarios...</p>
+      </div>
+
+      <div *ngIf="!isLoading && dataSource.data.length === 0" class="empty-state">
+        <mat-icon>people_outline</mat-icon>
+        <p><strong>No se encontraron usuarios</strong></p>
+        <p class="empty-text">Ajusta los filtros o nombre exacto para ver resultados.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="paginator-wrapper">
+    <mat-paginator
+      [length]="totalResults"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[5, 10, 20, 50]"
+      (page)="onPageChange($event)"
+      showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>

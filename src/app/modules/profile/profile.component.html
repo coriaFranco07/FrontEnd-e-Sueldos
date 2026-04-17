@@ -1,0 +1,104 @@
+<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-2xl font-bold">Mi Perfil</h2>
+    <button mat-icon-button (click)="goBack()" matTooltip="Volver atrás">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center mb-4">
+    <p>Cargando...</p>
+  </div>
+
+  <div *ngIf="successMessage" class="mb-4 p-3 bg-green-100 text-green-700 rounded">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="mb-4 p-3 bg-red-100 text-red-700 rounded">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <!-- Datos de Contacto -->
+    <div>
+      <h3 class="text-lg font-semibold mb-2">Datos de Contacto</h3>
+
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        />
+        <div *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" class="mt-1 text-red-600 text-sm">
+          El nombre es requerido
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        />
+        <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="mt-1 text-red-600 text-sm">
+          <div *ngIf="profileForm.get('email')?.errors?.['required']">El email es requerido</div>
+          <div *ngIf="profileForm.get('email')?.errors?.['email']">Formato de email inválido</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cambio de Contraseña -->
+    <div>
+      <h3 class="text-lg font-semibold mb-2">Cambiar Contraseña</h3>
+
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-700">Nueva Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        />
+        <div *ngIf="profileForm.get('password')?.invalid && profileForm.get('password')?.touched" class="mt-1 text-red-600 text-sm">
+          La contraseña debe tener al menos 8 caracteres, una letra y un número
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirmar Nueva Contraseña</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+        />
+        <div *ngIf="profileForm.errors?.['passwordMismatch'] && profileForm.get('confirmPassword')?.touched" class="mt-1 text-red-600 text-sm">
+          Las contraseñas no coinciden
+        </div>
+      </div>
+    </div>
+
+    <!-- Información de Solo Lectura -->
+    <div>
+      <h3 class="text-lg font-semibold mb-2">Información</h3>
+      <div class="mb-2">
+        <span class="font-medium">Rol:</span> {{ user?.role }}
+      </div>
+      <div class="mb-2">
+        <span class="font-medium">Email Verificado:</span> {{ user?.isEmailVerified ? 'Sí' : 'No' }}
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="profileForm.invalid || loading"
+      class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+    >
+      {{ loading ? 'Guardando...' : 'Guardar Cambios' }}
+    </button>
+  </form>
+</div>

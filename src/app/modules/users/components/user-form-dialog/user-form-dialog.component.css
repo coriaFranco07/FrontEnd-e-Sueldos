@@ -1,0 +1,224 @@
+.user-form-dialog-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.user-form-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 24px 20px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-bottom: 3px solid #5a67d8;
+}
+
+.dialog-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.9;
+  color: white;
+}
+
+.header-icon.edit-icon {
+  color: #fbbf24;
+}
+
+.header-icon.create-icon {
+  color: #34d399;
+}
+
+mat-dialog-content {
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 440px;
+  max-height: 550px;
+  overflow-y: auto;
+  background: #f8f9fa;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #667eea;
+  letter-spacing: 1px;
+  margin: 0 0 4px 0;
+}
+
+mat-form-field {
+  display: block;
+}
+
+.form-field-custom {
+  width: 100%;
+}
+
+::ng-deep .form-field-custom .mat-form-field-wrapper {
+  padding-bottom: 1.25em;
+}
+
+::ng-deep .form-field-custom .mat-form-field-infix {
+  border-top: none !important;
+}
+
+::ng-deep .form-field-custom .mat-form-field-flex {
+  padding-bottom: 0 !important;
+}
+
+::ng-deep .form-field-custom.mat-focused .mat-form-field-flex {
+  background: linear-gradient(to right, #f3f4f6, #ffffff) !important;
+}
+
+.prefix-icon {
+  color: #667eea;
+  font-weight: 500;
+}
+
+::ng-deep .form-field-custom .mat-form-field-label {
+  color: #6b7280 !important;
+}
+
+::ng-deep .form-field-custom.mat-focused .mat-form-field-label {
+  color: #667eea !important;
+}
+
+::ng-deep .form-field-custom.mat-form-field-invalid .mat-form-field-label {
+  color: #ef4444 !important;
+}
+
+.toggle-password {
+  color: #9ca3af !important;
+  transition: color 0.2s ease;
+}
+
+.toggle-password:hover {
+  color: #667eea !important;
+}
+
+.error-message {
+  display: block;
+  font-size: 12px;
+  color: #ef4444;
+  margin: 4px 0 0 0;
+  font-weight: 500;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Dialog actions */
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 1px solid #e5e7eb;
+  background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+}
+
+mat-dialog-actions button {
+  min-width: 110px;
+}
+
+.btn-cancel {
+  color: #6b7280 !important;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover:not([disabled]) {
+  background-color: #f3f4f6 !important;
+  color: #111827 !important;
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  transition: all 0.2s ease;
+}
+
+.btn-submit:hover:not([disabled]) {
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
+  transform: translateY(-1px);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%) !important;
+  box-shadow: none;
+}
+
+/* Spinner */
+.spinner {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+/* Scrollbar personalizado */
+mat-dialog-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+mat-dialog-content::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 3px;
+}
+
+mat-dialog-content::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+mat-dialog-content::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  mat-dialog-content {
+    min-width: auto;
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .user-form-dialog-container {
+    border-radius: 0;
+  }
+}

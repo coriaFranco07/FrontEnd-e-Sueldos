@@ -1,0 +1,86 @@
+<mat-toolbar color="primary">
+
+  <span class="title">
+    Sistema eSueldos
+  </span>
+
+  <span class="spacer"></span>
+
+  <!-- Logout -->
+  <button mat-button color="warn" routerLink="/auth/login">
+    <mat-icon>logout</mat-icon>
+    Salir
+  </button>
+
+</mat-toolbar>
+
+
+<!-- CONTENIDO -->
+<div class="content">
+
+  <h1 class="welcome-title">
+    Bienvenido al Sistema eSueldos
+  </h1>
+
+  <p class="welcome-subtitle">
+    Selecciona una opción para comenzar
+  </p>
+
+  <!-- BOTONES PRINCIPALES -->
+  <div class="cards">
+
+    <!-- PEFIL -->
+    <mat-card routerLink="/profile" class="card-click">
+
+      <div class="card-icon">
+        <mat-icon>people</mat-icon>
+      </div>
+
+      <mat-card-title>
+        Mi Perfil
+      </mat-card-title>
+
+      <mat-card-content>
+        Gestión de perfil.
+      </mat-card-content>
+
+    </mat-card>
+
+
+    <!-- PRODUCTOS -->
+    <mat-card routerLink="/products" class="card-click">
+
+      <div class="card-icon">
+        <mat-icon>inventory</mat-icon>
+      </div>
+
+      <mat-card-title>
+        Productos
+      </mat-card-title>
+
+      <mat-card-content>
+        Gestión de productos.
+      </mat-card-content>
+
+    </mat-card>
+
+    <!-- USUARIOS -->
+    <mat-card routerLink="/users" class="card-click">
+
+      <div class="card-icon">
+        <mat-icon>group</mat-icon>
+      </div>
+
+      <mat-card-title>
+        Usuarios
+      </mat-card-title>
+
+      <mat-card-content>
+        Administración de usuarios.
+      </mat-card-content>
+
+    </mat-card>
+
+  </div>
+
+</div>
