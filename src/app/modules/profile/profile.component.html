@@ -1,8 +1,9 @@
 <div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
   <div class="flex items-center justify-between mb-6">
     <h2 class="text-2xl font-bold">Mi Perfil</h2>
-    <button mat-icon-button (click)="goBack()" matTooltip="Volver atrás">
+    <button mat-stroked-button (click)="goBack()" class="back-btn-profile">
       <mat-icon>arrow_back</mat-icon>
+      Volver
     </button>
   </div>
 
@@ -83,13 +84,13 @@
     </div>
 
     <!-- Información de Solo Lectura -->
-    <div>
+    <div class="info-section">
       <h3 class="text-lg font-semibold mb-2">Información</h3>
       <div class="mb-2">
-        <span class="font-medium">Rol:</span> {{ user?.role }}
+        <span class="font-medium">Rol:</span> <span class="info-value">{{ user?.role }}</span>
       </div>
       <div class="mb-2">
-        <span class="font-medium">Email Verificado:</span> {{ user?.isEmailVerified ? 'Sí' : 'No' }}
+        <span class="font-medium">Email Verificado:</span> <span class="info-value">{{ user?.isEmailVerified ? 'Sí' : 'No' }}</span>
       </div>
     </div>
 

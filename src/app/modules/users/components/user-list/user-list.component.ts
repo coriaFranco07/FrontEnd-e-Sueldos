@@ -179,6 +179,58 @@ export class UserListComponent implements OnInit, AfterViewInit {
     });
   }
 
+  exportToCSV(): void {
+    let sortBy: string | undefined;
+    if (this.sort?.active) {
+      const direction = this.sort.direction === 'desc' ? 'desc' : 'asc';
+      sortBy = `${this.sort.active}:${direction}`;
+    }
+    const searchTerm = this.nameFilter.value?.trim() || undefined;
+    const role = this.roleFilter.value?.trim() || undefined;
+
+    const limit = this.totalResults > 0 ? this.totalResults : 1000;
+    
+    this.isLoading = true;
+    this.userService.getUsers(1, limit, sortBy, role, searchTerm).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        const users = response.results;
+        if (!users || users.length === 0) {
+          this.snackBar.open('No hay datos para exportar', 'Cerrar', { duration: 3000 });
+          return;
+        }
+
+        const csvRows = [];
+        csvRows.push(['Nombre', 'Email', 'Rol', 'Verificado'].join(','));
+
+        for (const user of users) {
+          const row = [
+            `"${user.name || ''}"`,
+            `"${user.email || ''}"`,
+            `"${user.role === 'admin' ? 'Admin' : 'Usuario'}"`,
+            `"${user.isEmailVerified ? 'Si' : 'No'}"`
+          ];
+          csvRows.push(row.join(','));
+        }
+
+        const csvString = csvRows.join('\n');
+        const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `reporte_usuarios_${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+        this.snackBar.open('Reporte descargado correctamente', 'Cerrar', { duration: 3000 });
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.error('Error exportando usuarios:', error);
+        this.snackBar.open('Error al exportar a CSV', 'Cerrar', { duration: 3000 });
+      }
+    });
+  }
+
   goBack(): void {
     this.router.navigate(['/principal']);
   }

@@ -2,15 +2,103 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+:root {
+  --bg-app: linear-gradient(180deg, #f4f6fb 0%, #e2e8f0 100%);
+  --bg-surface: rgba(255, 255, 255, 0.82);
+  --bg-card: #ffffff;
+  --text-main: #111827;
+  --text-muted: #64748b;
+  --border-color: rgba(148, 163, 184, 0.2);
+}
+
+body.dark-theme {
+  --bg-app: linear-gradient(180deg, #1e1e24 0%, #121212 100%);
+  --bg-surface: rgba(30, 41, 59, 0.7);
+  --bg-card: #1e293b;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
 html, body { height: 100%; }
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background: linear-gradient(180deg, #f4f6fb 0%, #e2e8f0 100%);
-  color: #111827;
+  background: var(--bg-app);
+  color: var(--text-main);
   min-height: 100vh;
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* --- Dark Theme Variables & Overrides --- */
+body.dark-theme {
+  background: linear-gradient(180deg, #1e1e24 0%, #121212 100%);
+  color: #e0e0e0;
+  
+  /* Angular Material specific variable overrides */
+  --mat-toolbar-container-background-color: #212121;
+  --mat-toolbar-container-text-color: #ffffff;
+  --mat-card-subtitle-text-color: #b0b0b0;
+  --mat-select-panel-background-color: #424242;
+  --mat-select-enabled-arrow-color: #ffffff;
+  --mat-option-label-text-color: #ffffff;
+  --mat-dialog-container-color: #424242;
+  --mat-dialog-container-text-color: #ffffff;
+  
+  --mdc-theme-surface: #424242;
+  --mdc-theme-on-surface: #ffffff;
+  --mdc-theme-background: #121212;
+  --mdc-theme-on-background: #ffffff;
+  
+  --mdc-dialog-container-color: #424242;
+  --mdc-dialog-subhead-color: #ffffff;
+  --mdc-dialog-supporting-text-color: #b0b0b0;
+  
+  --mdc-filled-text-field-container-color: #303030;
+  --mdc-filled-text-field-input-text-color: #ffffff;
+  --mdc-filled-text-field-label-text-color: #b0b0b0;
+  --mdc-outlined-text-field-input-text-color: #ffffff;
+  --mdc-outlined-text-field-label-text-color: #b0b0b0;
+  --mdc-outlined-text-field-outline-color: #757575;
+  --mdc-outlined-text-field-hover-outline-color: #e0e0e0;
+}
+
+body.dark-theme .mat-mdc-card,
+body.dark-theme .mat-mdc-dialog-container,
+body.dark-theme .mat-mdc-select-panel,
+body.dark-theme .mat-mdc-table,
+body.dark-theme .mat-mdc-paginator {
+  background-color: #424242 !important;
+  color: #ffffff !important;
+}
+
+body.dark-theme .mat-mdc-cell,
+body.dark-theme .mat-mdc-header-cell {
+  color: #e0e0e0 !important;
+  border-bottom-color: #616161 !important;
+}
+
+body.dark-theme .mat-mdc-row:hover {
+  background-color: #505050 !important;
+}
+
+body.dark-theme .page-header,
+body.dark-theme .table-toolbar {
+  color: #ffffff;
+}
+
+body.dark-theme .page-description,
+body.dark-theme .toolbar-subtitle {
+  color: #b0b0b0;
+}
+
+body.dark-theme .user-table {
+  background-color: #424242;
+}
+
+body.dark-theme .mat-mdc-icon-button {
+  color: #e0e0e0;
 }

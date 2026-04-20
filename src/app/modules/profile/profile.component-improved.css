@@ -255,3 +255,51 @@ input:focus {
     margin-top: 1.5rem;
   }
 }
+
+/* Dark Mode Overrides */
+:host-context(.dark-theme) .bg-white {
+  background-color: #f8fafc; /* Light background for the profile card even in dark mode */
+}
+
+:host-context(.dark-theme) .text-gray-700,
+:host-context(.dark-theme) .text-2xl,
+:host-context(.dark-theme) .text-lg,
+:host-context(.dark-theme) h1,
+:host-context(.dark-theme) h2,
+:host-context(.dark-theme) h3,
+:host-context(.dark-theme) p,
+:host-context(.dark-theme) label,
+:host-context(.dark-theme) span,
+:host-context(.dark-theme) .font-medium,
+:host-context(.dark-theme) .text-sm {
+  color: #000000 !important;
+}
+
+:host-context(.dark-theme) input {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #cbd5e1;
+}
+
+:host-context(.dark-theme) .bg-green-100 {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+:host-context(.dark-theme) .text-green-700 {
+  color: #15803d;
+}
+
+:host-context(.dark-theme) .bg-red-100 {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+:host-context(.dark-theme) .text-red-700,
+:host-context(.dark-theme) .text-red-600 {
+  color: #b91c1c;
+}
+
+:host-context(.dark-theme) button[mat-icon-button]:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.05);
+}

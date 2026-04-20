@@ -49,6 +49,10 @@
         <p class="toolbar-subtitle">Ordenados por los valores que elijas en la tabla.</p>
       </div>
       <div class="toolbar-actions">
+        <button mat-stroked-button color="primary" class="export-btn" (click)="exportToCSV()" [disabled]="isLoading || totalResults === 0" matTooltip="Exportar a CSV">
+          <mat-icon>download</mat-icon>
+          Exportar CSV
+        </button>
         <button mat-flat-button color="primary" class="create-btn" (click)="openCreateDialog()">
           <mat-icon>person_add</mat-icon>
           Nuevo usuario
@@ -81,23 +85,27 @@
 
         <ng-container matColumnDef="isEmailVerified">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Verificado</th>
-          <td mat-cell *matCellDef="let user" [ngClass]="user.isEmailVerified ? 'verification-badge verified' : 'verification-badge unverified'">
-            <mat-icon aria-hidden="false">{{ user.isEmailVerified ? 'check_circle' : 'cancel' }}</mat-icon>
-            <span>{{ user.isEmailVerified ? 'Verificado' : 'No verificado' }}</span>
+          <td mat-cell *matCellDef="let user">
+            <div [ngClass]="user.isEmailVerified ? 'verification-badge verified' : 'verification-badge unverified'">
+              <mat-icon aria-hidden="false">{{ user.isEmailVerified ? 'check_circle' : 'cancel' }}</mat-icon>
+              <span>{{ user.isEmailVerified ? 'Verificado' : 'No verificado' }}</span>
+            </div>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef class="actions-header">Acciones</th>
-          <td mat-cell *matCellDef="let user" class="actions-cell">
-            <button mat-flat-button color="primary" class="action-btn edit" (click)="editUser(user)" matTooltip="Editar usuario">
-              <mat-icon>edit</mat-icon>
-              Editar
-            </button>
-            <button mat-flat-button color="warn" class="action-btn delete" (click)="deleteUser(user)" matTooltip="Eliminar usuario">
-              <mat-icon>delete</mat-icon>
-              Eliminar
-            </button>
+          <td mat-cell *matCellDef="let user">
+            <div class="actions-cell">
+              <button mat-flat-button color="primary" class="action-btn edit" (click)="editUser(user)" matTooltip="Editar usuario">
+                <mat-icon>edit</mat-icon>
+                Editar
+              </button>
+              <button mat-flat-button color="warn" class="action-btn delete" (click)='deleteUser(user)' matTooltip="Eliminar usuario">
+                <mat-icon>delete</mat-icon>
+                Eliminar
+              </button>
+            </div>
           </td>
         </ng-container>
 
