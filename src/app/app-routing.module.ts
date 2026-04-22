@@ -2,11 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { PrincipalComponent } from './modules/principal/principal.component';
-import { ProductsComponent } from './modules/products/products.component';
 
 const routes: Routes = [
-
-  // Redirección inicial
   {
     path: '',
     redirectTo: 'principal',
@@ -18,7 +15,9 @@ const routes: Routes = [
   },
   {
     path: 'products',
-    component: ProductsComponent
+    loadChildren: () =>
+      import('./modules/products/products.module')
+        .then(m => m.ProductsModule)
   },
   {
     path: 'users',
@@ -42,7 +41,6 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'principal'
   }
-
 ];
 
 @NgModule({

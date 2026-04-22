@@ -1,105 +1,176 @@
-<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-  <div class="flex items-center justify-between mb-6">
-    <h2 class="text-2xl font-bold">Mi Perfil</h2>
+<div class="profile-container">
+
+  <!-- Header -->
+  <div class="profile-header">
+    <div class="header-left">
+      <div class="avatar">
+        <mat-icon>person</mat-icon>
+      </div>
+
+      <div>
+        <h2 class="profile-title">Mi Perfil</h2>
+        <p class="profile-subtitle">Gestiona tu información personal</p>
+      </div>
+    </div>
+
     <button mat-stroked-button (click)="goBack()" class="back-btn-profile">
       <mat-icon>arrow_back</mat-icon>
       Volver
     </button>
   </div>
 
-  <div *ngIf="loading" class="text-center mb-4">
-    <p>Cargando...</p>
+  <!-- Loading -->
+  <div *ngIf="loading" class="status-message loading">
+    Cargando información...
   </div>
 
-  <div *ngIf="successMessage" class="mb-4 p-3 bg-green-100 text-green-700 rounded">
+  <!-- Success -->
+  <div *ngIf="successMessage" class="status-message success">
     {{ successMessage }}
   </div>
 
-  <div *ngIf="errorMessage" class="mb-4 p-3 bg-red-100 text-red-700 rounded">
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="status-message error">
     {{ errorMessage }}
   </div>
 
-  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-4">
-    <!-- Datos de Contacto -->
-    <div>
-      <h3 class="text-lg font-semibold mb-2">Datos de Contacto</h3>
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
 
-      <div class="mb-4">
-        <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
+    <!-- Datos de Contacto -->
+    <div class="card-section">
+
+      <h3 class="section-title">
+        <mat-icon>contact_mail</mat-icon>
+        Datos de Contacto
+      </h3>
+
+      <div class="form-group">
+
+        <label>Nombre</label>
+
         <input
           type="text"
-          id="name"
           formControlName="name"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          placeholder="Ingresa tu nombre"
         />
-        <div *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" class="mt-1 text-red-600 text-sm">
+
+        <div class="error-text"
+             *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
+
           El nombre es requerido
+
         </div>
+
       </div>
 
-      <div class="mb-4">
-        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+      <div class="form-group">
+
+        <label>Email</label>
+
         <input
           type="email"
-          id="email"
           formControlName="email"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          placeholder="ejemplo@email.com"
         />
-        <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="mt-1 text-red-600 text-sm">
-          <div *ngIf="profileForm.get('email')?.errors?.['required']">El email es requerido</div>
-          <div *ngIf="profileForm.get('email')?.errors?.['email']">Formato de email inválido</div>
+
+        <div class="error-text"
+             *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+
+          <div *ngIf="profileForm.get('email')?.errors?.['required']">
+            El email es requerido
+          </div>
+
+          <div *ngIf="profileForm.get('email')?.errors?.['email']">
+            Formato de email inválido
+          </div>
+
         </div>
+
       </div>
+
     </div>
 
-    <!-- Cambio de Contraseña -->
-    <div>
-      <h3 class="text-lg font-semibold mb-2">Cambiar Contraseña</h3>
+    <!-- Contraseña -->
+    <div class="card-section">
 
-      <div class="mb-4">
-        <label for="password" class="block text-sm font-medium text-gray-700">Nueva Contraseña</label>
+      <h3 class="section-title">
+        <mat-icon>lock</mat-icon>
+        Cambiar Contraseña
+      </h3>
+
+      <div class="form-group">
+
+        <label>Nueva Contraseña</label>
+
         <input
           type="password"
-          id="password"
           formControlName="password"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          placeholder="Nueva contraseña"
         />
-        <div *ngIf="profileForm.get('password')?.invalid && profileForm.get('password')?.touched" class="mt-1 text-red-600 text-sm">
-          La contraseña debe tener al menos 8 caracteres, una letra y un número
+
+        <div class="error-text"
+             *ngIf="profileForm.get('password')?.invalid && profileForm.get('password')?.touched">
+
+          La contraseña debe tener al menos 8 caracteres
+
         </div>
+
       </div>
 
-      <div class="mb-4">
-        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirmar Nueva Contraseña</label>
+      <div class="form-group">
+
+        <label>Confirmar Contraseña</label>
+
         <input
           type="password"
-          id="confirmPassword"
           formControlName="confirmPassword"
-          class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+          placeholder="Confirmar contraseña"
         />
-        <div *ngIf="profileForm.errors?.['passwordMismatch'] && profileForm.get('confirmPassword')?.touched" class="mt-1 text-red-600 text-sm">
+
+        <div class="error-text"
+             *ngIf="profileForm.errors?.['passwordMismatch']
+             && profileForm.get('confirmPassword')?.touched">
+
           Las contraseñas no coinciden
+
         </div>
+
       </div>
+
     </div>
 
-    <!-- Información de Solo Lectura -->
-    <div class="info-section">
-      <h3 class="text-lg font-semibold mb-2">Información</h3>
-      <div class="mb-2">
-        <span class="font-medium">Rol:</span> <span class="info-value">{{ user?.role }}</span>
+    <!-- Info -->
+    <div class="card-section info-box">
+
+      <h3 class="section-title">
+        <mat-icon>info</mat-icon>
+        Información del Usuario
+      </h3>
+
+      <div class="info-row">
+        <span>Rol:</span>
+        <strong>{{ user?.role }}</strong>
       </div>
-      <div class="mb-2">
-        <span class="font-medium">Email Verificado:</span> <span class="info-value">{{ user?.isEmailVerified ? 'Sí' : 'No' }}</span>
+
+      <div class="info-row">
+        <span>Email Verificado:</span>
+        <strong>
+          {{ user?.isEmailVerified ? 'Sí' : 'No' }}
+        </strong>
       </div>
+
     </div>
 
+    <!-- Botón -->
     <button
       type="submit"
       [disabled]="profileForm.invalid || loading"
-      class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-    >
+      class="save-btn">
+
       {{ loading ? 'Guardando...' : 'Guardar Cambios' }}
+
     </button>
+
   </form>
+
 </div>

@@ -1,159 +1,161 @@
-/* Fondo general */
-.login-container {
-
+.register-container {
   min-height: 100vh;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 20px;
-
-  background: linear-gradient(
-    135deg,
-    #667eea,
-    #764ba2
-  );
-
+  background: linear-gradient(135deg, #667eea, #764ba2);
 }
 
-
-/* Card */
-.login-card {
-
+.register-card {
   width: 100%;
   max-width: 420px;
-
   border-radius: 20px !important;
-
   padding: 20px;
-
-  box-shadow:
-    0 15px 35px rgba(0,0,0,0.2);
-
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
 }
 
-
-/* Header */
-.login-header {
-
+/* HEADER */
+.register-header {
   display: flex;
   flex-direction: column;
-
   align-items: center;
-
   margin-bottom: 20px;
-
 }
 
-
-/* Logo */
 .logo-circle {
-
   width: 70px;
   height: 70px;
-
   border-radius: 50%;
-
-  background: linear-gradient(
-    135deg,
-    #3f51b5,
-    #5c6bc0
-  );
-
+  background: linear-gradient(135deg, #3f51b5, #5c6bc0);
   display: flex;
   align-items: center;
   justify-content: center;
-
   margin-bottom: 10px;
-
 }
 
 .logo-circle mat-icon {
-
   color: white;
   font-size: 36px;
-
 }
 
-
-/* Titulo */
-.login-title {
-
-  font-size: 28px !important;
-
+.register-title {
+  font-size: 28px;
   font-weight: bold;
-
   text-align: center;
-
 }
 
-
-/* Subtitulo */
-.login-subtitle {
-
+.register-subtitle {
   text-align: center;
-
   color: #666;
-
 }
 
-
-/* Form */
-.login-form {
-
+/* FORM */
+.register-form {
   display: flex;
-
   flex-direction: column;
-
   gap: 16px;
-
 }
 
-
-.full-width {
-
-  width: 100%;
-
+/* INPUTS (IGUAL LOGIN) */
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
+.input-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
 
-/* Boton */
-.login-button {
-
-  height: 48px;
-
-  font-size: 16px;
-
+.input-container {
+  display: flex;
+  align-items: center;
+  background-color: #f3f4f6;
   border-radius: 12px;
+  padding: 0 12px;
+  transition: 0.2s ease;
+}
 
+.input-container:focus-within {
+  background-color: #eff6ff;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+.input-icon {
+  color: #9ca3af;
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+.input-container:focus-within .input-icon {
+  color: #3b82f6;
+}
+
+.custom-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 14px 0;
+  font-size: 15px;
+}
+
+.custom-input::placeholder {
+  color: #d1d5db;
+}
+
+/* toggle password */
+.toggle-btn {
+  color: #9ca3af !important;
+  margin-right: -8px;
+}
+
+.toggle-btn:hover {
+  color: #3b82f6 !important;
+}
+
+/* ERROR */
+.input-error {
+  font-size: 12px;
+  color: #ef4444;
+}
+
+/* BUTTON */
+.submit-button {
+  height: 48px;
+  font-size: 16px;
+  border-radius: 12px;
   margin-top: 10px;
-
 }
 
-
-/* Footer */
-.login-footer {
-
+/* FOOTER */
+.register-footer {
   text-align: center;
-
   margin-top: 20px;
-
 }
 
-
-.login-footer a {
-
+.register-footer a {
   color: #3f51b5;
-
   font-weight: bold;
-
   text-decoration: none;
-
 }
 
-.login-footer a:hover {
-
+.register-footer a:hover {
   text-decoration: underline;
+}
 
+.logo-circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  border-radius: 25px;
 }

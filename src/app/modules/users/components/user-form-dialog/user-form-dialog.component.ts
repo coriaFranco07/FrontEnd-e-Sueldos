@@ -30,8 +30,8 @@ export class UserFormDialogComponent implements OnInit {
     this.userForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
-      confirmPassword: ['', Validators.required],
+      password: ['', [Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
+      confirmPassword: [''],
       role: ['user', Validators.required]
     }, { validators: this.passwordMatchValidator });
   }
@@ -43,10 +43,22 @@ export class UserFormDialogComponent implements OnInit {
         email: this.data.user.email,
         role: this.data.user.role
       });
-      // Remover validaciones de password en edición
+      // En edición, la contraseña es opcional
       this.userForm.get('password')?.clearValidators();
+      this.userForm.get('password')?.setValidators([
+        Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)
+      ]);
       this.userForm.get('password')?.updateValueAndValidity();
       this.userForm.get('confirmPassword')?.clearValidators();
+      this.userForm.get('confirmPassword')?.updateValueAndValidity();
+    } else {
+      // En creación, la contraseña es obligatoria
+      this.userForm.get('password')?.setValidators([
+        Validators.required,
+        Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)
+      ]);
+      this.userForm.get('confirmPassword')?.setValidators([Validators.required]);
+      this.userForm.get('password')?.updateValueAndValidity();
       this.userForm.get('confirmPassword')?.updateValueAndValidity();
     }
   }
@@ -54,9 +66,10 @@ export class UserFormDialogComponent implements OnInit {
   passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
-    
+
+    if (!password && !confirmPassword) return null;
     if (!password || !confirmPassword) return null;
-    
+
     return password === confirmPassword ? null : { passwordMismatch: true };
   }
 
@@ -78,15 +91,17 @@ export class UserFormDialogComponent implements OnInit {
       return;
     }
 
-    const payload = this.userForm.value;
-    delete payload.confirmPassword; // No enviar confirmPassword al servidor
     this.isLoading = true;
+    const formValue = { ...this.userForm.value };
+    delete formValue.confirmPassword;
 
     if (this.data.mode === 'edit' && this.data.user) {
-      // En edición, no enviar password ni role
-      delete payload.password;
-      delete payload.role;
-      this.userService.updateUser(this.data.user.id, payload).subscribe({
+      // Si no se ingresó contraseña nueva, no la enviamos
+      if (!formValue.password) {
+        delete formValue.password;
+      }
+
+      this.userService.updateUser(this.data.user.id, formValue).subscribe({
         next: () => {
           this.isLoading = false;
           this.dialogRef.close(true);
@@ -98,7 +113,7 @@ export class UserFormDialogComponent implements OnInit {
         }
       });
     } else {
-      this.userService.createUser(payload).subscribe({
+      this.userService.createUser(formValue).subscribe({
         next: () => {
           this.isLoading = false;
           this.dialogRef.close(true);

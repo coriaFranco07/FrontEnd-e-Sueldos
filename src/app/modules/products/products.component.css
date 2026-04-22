@@ -1,0 +1,406 @@
+/* CONTENEDOR PRINCIPAL */
+
+.products-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 24px 20px;
+
+  /* estilo Amazon */
+  background: #f3f3f3;
+}
+
+
+/* HEADER */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 18px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.page-header h1 {
+  color: #111827;
+  font-size: 34px;
+  margin: 0;
+  font-weight: 800;
+}
+
+.page-description {
+  margin: 6px 0 0;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+
+/* ACCIONES HEADER */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+
+/* BOTON VOLVER */
+
+.back-btn {
+  background: #374151 !important;
+  color: white !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+/* BADGE TOTAL */
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  background: white;
+  color: #111827;
+
+  padding: 10px 16px;
+  border-radius: 8px;
+
+  font-weight: 700;
+
+  border: 1px solid #e5e7eb;
+}
+
+.header-badge strong {
+  font-size: 20px;
+}
+
+
+/* ERROR */
+
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background: #fee2e2;
+  color: #b91c1c;
+
+  padding: 14px 20px;
+  border-radius: 8px;
+
+  margin-bottom: 20px;
+
+  font-weight: 600;
+}
+
+
+/* PANEL */
+
+.table-panel {
+  background: white;
+
+  border-radius: 10px;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+
+  overflow: hidden;
+}
+
+
+/* LOADING / VACIO */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 56px 24px;
+
+  color: #6b7280;
+}
+
+.empty-state mat-icon {
+  font-size: 56px;
+  width: 56px;
+  height: 56px;
+
+  color: #d1d5db;
+
+  margin-bottom: 16px;
+}
+
+.empty-text {
+  margin-top: 4px;
+  color: #9ca3af;
+}
+
+
+/* GRID PRODUCTOS */
+
+.products-grid {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+
+  gap: 18px;
+
+  padding: 20px;
+}
+
+
+/* CARD PRODUCTO */
+
+.product-card {
+  background: white;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  transition: 0.2s;
+
+  border: 1px solid #e5e7eb;
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* HOVER tipo Amazon */
+
+.product-card:hover {
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  transform: translateY(-3px);
+}
+
+
+/* IMAGEN */
+
+.product-image {
+  height: 180px;
+
+  background: #f9fafb;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-placeholder mat-icon {
+  font-size: 56px;
+  width: 56px;
+  height: 56px;
+
+  color: #cbd5e1;
+}
+
+
+/* BADGE STOCK */
+
+.stock-badge {
+  position: absolute;
+
+  top: 10px;
+  right: 10px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  padding: 5px 8px;
+
+  border-radius: 6px;
+}
+
+.in-stock {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.out-stock {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+
+/* INFO */
+
+.product-info {
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+
+  flex-grow: 1;
+}
+
+
+/* CATEGORIA */
+
+.product-category {
+  font-size: 11px;
+
+  font-weight: 700;
+
+  color: #2563eb;
+
+  margin-bottom: 6px;
+
+  text-transform: uppercase;
+}
+
+
+/* TITULO */
+
+.product-title {
+  font-size: 16px;
+
+  font-weight: 700;
+
+  color: #111827;
+
+  margin: 0 0 8px;
+
+  line-height: 1.3;
+}
+
+
+/* DESCRIPCION */
+
+.product-description {
+  font-size: 13px;
+
+  color: #6b7280;
+
+  margin-bottom: 12px;
+
+  flex-grow: 1;
+}
+
+
+/* FOOTER */
+
+.product-footer {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+}
+
+
+/* PRECIO */
+
+.product-price {
+  font-size: 20px;
+
+  font-weight: 900;
+
+  color: #b12704; /* rojo Amazon */
+}
+
+
+/* STOCK */
+
+.product-stock {
+  font-size: 12px;
+
+  color: #6b7280;
+}
+
+
+/* BOTON */
+
+.view-btn {
+  border-radius: 8px !important;
+
+  font-weight: 700 !important;
+
+  background: #ffd814 !important;
+
+  color: #111 !important;
+}
+
+
+/* PAGINADOR */
+
+.paginator-wrapper {
+  display: flex;
+
+  justify-content: flex-end;
+
+  padding: 10px 16px;
+
+  border-top: 1px solid #e5e7eb;
+
+  background: white;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+
+  .page-header h1 {
+    font-size: 26px;
+  }
+
+}
+
+
+/* ACCIONES PRODUCTO */
+
+.product-actions {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px 16px 16px;
+}
+
+
+/* BOTON EDITAR */
+
+.edit-btn {
+  flex: 1;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+}
+
+
+/* BOTON ELIMINAR */
+
+.delete-btn {
+  flex: 1;
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+}
+
+
+/* ICONOS */
+
+.product-actions mat-icon {
+  margin-right: 4px;
+  font-size: 18px;
+}

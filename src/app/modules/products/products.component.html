@@ -1,1 +1,123 @@
-<h1>En productos</h1>
+<div class="products-container">
+
+  <!-- HEADER -->
+  <section class="page-header">
+    <div>
+      <p class="eyebrow">Gestión de inventario</p>
+      <h1>Productos</h1>
+      <p class="page-description">Listado de productos cargados en el sistema.</p>
+    </div>
+    <div class="header-actions">
+      <button mat-raised-button (click)="goBack()" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
+        Volver
+      </button>
+      <div class="header-badge">
+        <span>Total</span>
+        <strong>{{ totalResults }}</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- ERROR -->
+  <div *ngIf="errorMessage" class="error-banner">
+    <mat-icon>error_outline</mat-icon>
+    <span>{{ errorMessage }}</span>
+  </div>
+
+  <!-- PRODUCTOS EN MODO TIENDA -->
+<div *ngIf="!isLoading && products.length > 0" class="products-grid">
+
+  <div class="product-card" *ngFor="let product of products">
+
+    <!-- IMAGEN GENERICA -->
+    <div class="product-image">
+
+      <div class="image-placeholder">
+        <mat-icon>inventory_2</mat-icon>
+      </div>
+
+      <!-- BADGE STOCK -->
+      <span 
+        class="stock-badge"
+        [ngClass]="{
+          'in-stock': (product.stock ?? 0) > 0,
+          'out-stock': (product.stock ?? 0) === 0
+        }">
+
+        {{ (product.stock ?? 0) > 0 ? 'En stock' : 'Sin stock' }}
+
+      </span>
+
+    </div>
+
+    <!-- INFO -->
+    <div class="product-info">
+
+      <!-- CATEGORIA -->
+      <span class="product-category">
+        {{ product.category || 'General' }}
+      </span>
+
+      <!-- NOMBRE -->
+      <h3 class="product-title">
+        {{ product.name }}
+      </h3>
+
+      <!-- DESCRIPCION -->
+      <p class="product-description">
+        {{ product.description || 'Sin descripción disponible.' }}
+      </p>
+
+      <!-- FOOTER -->
+      <div class="product-footer">
+
+  <div class="price-stock">
+
+    <span class="product-price">
+      $ {{ product.price | number:'1.0-0' }}
+    </span>
+
+    <span class="product-stock">
+      Stock: {{ product.stock ?? 0 }}
+    </span>
+
+  </div>
+
+</div>
+
+<!-- BOTONES ACCION -->
+
+<div class="product-actions">
+
+  <button
+    mat-stroked-button
+    color="primary"
+    class="edit-btn"
+    (click)="editProduct(product)">
+
+    <mat-icon>edit</mat-icon>
+    Editar
+
+  </button>
+
+  <button
+    mat-stroked-button
+    color="warn"
+    class="delete-btn"
+    (click)="deleteProduct(product)">
+
+    <mat-icon>delete</mat-icon>
+    Eliminar
+
+  </button>
+
+</div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
