@@ -2,13 +2,28 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// Interfaces basadas en los requerimientos
+export type UserRole = 'user' | 'admin';
+
 export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'user' | 'admin';
+  role: UserRole;
   isEmailVerified: boolean;
+}
+
+export interface CreateUserRequest {
+  name: string;
+  email: string;
+  password: string;
+  role?: UserRole;
+}
+
+export interface UpdateUserRequest {
+  name?: string;
+  email?: string;
+  role?: UserRole;
+  password?: string;
 }
 
 export interface PaginatedResponse<T> {
@@ -27,31 +42,31 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  // Obtener usuarios con paginación y filtros del servidor
+  getUserById(id: string): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/${id}`);
+  }
+
   getUsers(page: number, limit: number, sortBy?: string, role?: string, name?: string): Observable<PaginatedResponse<User>> {
-    // Construir params objeto siguiendo el patrón del backend
     const paramsObj: { [key: string]: string } = {
       page: String(page),
       limit: String(limit),
     };
 
-    // Solo agregar parámetros opcionales si tienen valor
     if (name && name.trim().length > 0) {
       paramsObj['name'] = name.trim();
-      console.log('✅ Agregando name:', name.trim());
+      console.log('Agregando name:', name.trim());
     }
     if (role && role.trim().length > 0) {
       paramsObj['role'] = role.trim();
-      console.log('✅ Agregando role:', role.trim());
+      console.log('Agregando role:', role.trim());
     }
     if (sortBy && sortBy.trim().length > 0) {
       paramsObj['sortBy'] = sortBy.trim();
-      console.log('✅ Agregando sortBy:', sortBy.trim());
+      console.log('Agregando sortBy:', sortBy.trim());
     }
 
-    console.log('📡 Parámetros finales:', paramsObj);
+    console.log('Parametros finales:', paramsObj);
 
-    // Construir HttpParams
     let httpParams = new HttpParams();
     Object.keys(paramsObj).forEach(key => {
       httpParams = httpParams.set(key, paramsObj[key]);
@@ -60,17 +75,14 @@ export class UserService {
     return this.http.get<PaginatedResponse<User>>(this.apiUrl, { params: httpParams });
   }
 
-  // Crear usuario
-  createUser(userData: Partial<User>): Observable<User> {
+  createUser(userData: CreateUserRequest): Observable<User> {
     return this.http.post<User>(this.apiUrl, userData);
   }
 
-  // Actualizar usuario
-  updateUser(id: string, userData: Partial<User>): Observable<User> {
+  updateUser(id: string, userData: UpdateUserRequest): Observable<User> {
     return this.http.patch<User>(`${this.apiUrl}/${id}`, userData);
   }
 
-  // Eliminar usuario
   deleteUser(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

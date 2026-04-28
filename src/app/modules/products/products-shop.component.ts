@@ -2,21 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ProductService, Product } from './product.service';
-import { ProductFormDialogComponent } from './components/product-form-dialog/product-form-dialog.component';
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 
 type StockFilterValue = 'all' | 'in' | 'low' | 'out';
 
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css']
+  selector: 'app-products-shop',
+  templateUrl: './products-shop.component.html',
+  styleUrls: ['./products-shop.component.css']
 })
-export class ProductsComponent implements OnInit {
+export class ProductsShopComponent implements OnInit {
   products: Product[] = [];
   isLoading = false;
   errorMessage = '';
@@ -24,6 +28,8 @@ export class ProductsComponent implements OnInit {
   totalResults = 0;
   pageSize = 12;
   currentPage = 0;
+  cartCount = 0;
+  cartItems: CartItem[] = [];
 
   readonly categories = [
     'Electronica',
@@ -61,7 +67,6 @@ export class ProductsComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private router: Router
   ) {}
@@ -69,6 +74,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.setupFilters();
     this.loadProducts();
+    this.syncCartState();
   }
 
   setupFilters(): void {
@@ -80,23 +86,17 @@ export class ProductsComponent implements OnInit {
       this.loadProducts();
     });
 
-    this.categoryFilter.valueChanges.pipe(
-      distinctUntilChanged()
-    ).subscribe(() => {
+    this.categoryFilter.valueChanges.pipe(distinctUntilChanged()).subscribe(() => {
       this.currentPage = 0;
       this.loadProducts();
     });
 
-    this.stockFilter.valueChanges.pipe(
-      distinctUntilChanged()
-    ).subscribe(() => {
+    this.stockFilter.valueChanges.pipe(distinctUntilChanged()).subscribe(() => {
       this.currentPage = 0;
       this.loadProducts();
     });
 
-    this.sortControl.valueChanges.pipe(
-      distinctUntilChanged()
-    ).subscribe(() => {
+    this.sortControl.valueChanges.pipe(distinctUntilChanged()).subscribe(() => {
       this.currentPage = 0;
       this.loadProducts();
     });
@@ -116,11 +116,8 @@ export class ProductsComponent implements OnInit {
     }).subscribe({
       next: (response) => {
         const filteredResults = this.applyClientSideFallbackFilters(response.results);
-
         this.products = filteredResults;
-        this.totalResults = this.shouldUseFilteredCount()
-          ? filteredResults.length
-          : response.totalResults;
+        this.totalResults = this.shouldUseFilteredCount() ? filteredResults.length : response.totalResults;
         this.isLoading = false;
       },
       error: (err) => {
@@ -137,17 +134,12 @@ export class ProductsComponent implements OnInit {
     const selectedStock = this.stockFilter.value;
 
     return products.filter(product => {
-      const matchesSearch = !searchTerm || [
-        product.name,
-        product.description,
-        product.category
-      ]
+      const matchesSearch = !searchTerm || [product.name, product.description, product.category]
         .filter(Boolean)
         .some(value => String(value).toLowerCase().includes(searchTerm));
 
       const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
       const matchesStock = selectedStock === 'all' || this.getStockStatus(product.stock) === selectedStock;
-
       return matchesSearch && matchesCategory && matchesStock;
     });
   }
@@ -174,68 +166,91 @@ export class ProductsComponent implements OnInit {
     this.snackBar.open('Filtros limpiados', 'Cerrar', { duration: 2000 });
   }
 
-  openCreateDialog(): void {
-    const ref = this.dialog.open(ProductFormDialogComponent, {
-      width: '520px',
-      data: { mode: 'create' }
+  addToCart(product: Product): void {
+    const cart = this.getCart();
+    cart.push({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: 1
     });
-
-    ref.afterClosed().subscribe(created => {
-      if (created) {
-        this.snackBar.open('Producto creado correctamente', 'Cerrar', { duration: 3000 });
-        this.loadProducts();
-      }
-    });
+    this.saveCart(cart);
+    this.snackBar.open(`${product.name} agregado al carrito`, 'Cerrar', { duration: 2200 });
   }
 
-  editProduct(product: Product): void {
-    const ref = this.dialog.open(ProductFormDialogComponent, {
-      width: '520px',
-      data: { mode: 'edit', product }
-    });
+  incrementQuantity(product: Product): void {
+    const cart = this.getCart();
+    const item = cart.find(entry => entry.id === product.id);
+    if (!item) {
+      this.addToCart(product);
+      return;
+    }
 
-    ref.afterClosed().subscribe(updated => {
-      if (updated) {
-        this.snackBar.open('Producto actualizado correctamente', 'Cerrar', { duration: 3000 });
-        this.loadProducts();
-      }
-    });
+    const stock = product.stock ?? Number.MAX_SAFE_INTEGER;
+    if (item.quantity >= stock) {
+      this.snackBar.open('No podés agregar más unidades que el stock disponible', 'Cerrar', { duration: 2200 });
+      return;
+    }
+
+    item.quantity += 1;
+    this.saveCart(cart);
   }
 
-  deleteProduct(product: Product): void {
-    const ref = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: 'Eliminar Producto',
-        message: `¿Estás seguro que deseás eliminar "${product.name}"? Esta acción no se puede deshacer.`,
-        confirmText: 'Eliminar',
-        cancelText: 'Cancelar'
-      }
-    });
+  decrementQuantity(product: Product): void {
+    const cart = this.getCart();
+    const item = cart.find(entry => entry.id === product.id);
+    if (!item) return;
 
-    ref.afterClosed().subscribe(confirmed => {
-      if (confirmed) {
-        this.productService.deleteProduct(product.id).subscribe({
-          next: () => {
-            this.snackBar.open('Producto eliminado', 'Cerrar', { duration: 3000 });
-            if (this.products.length === 1 && this.currentPage > 0) {
-              this.currentPage -= 1;
-            }
-            this.loadProducts();
-          },
-          error: (err) => {
-            this.snackBar.open(
-              err.error?.message || 'Error al eliminar el producto',
-              'Cerrar',
-              { duration: 3000 }
-            );
-          }
-        });
-      }
-    });
+    item.quantity -= 1;
+    if (item.quantity <= 0) {
+      this.removeFromCart(product);
+      return;
+    }
+
+    this.saveCart(cart);
+  }
+
+  removeFromCart(product: Product): void {
+    const cart = this.getCart().filter(item => item.id !== product.id);
+    this.saveCart(cart);
+    this.snackBar.open(`${product.name} quitado del carrito`, 'Cerrar', { duration: 2000 });
+  }
+
+  clearCart(): void {
+    localStorage.removeItem('shopCart');
+    this.syncCartState();
+    this.snackBar.open('Carrito vaciado', 'Cerrar', { duration: 2000 });
+  }
+
+  getCart(): CartItem[] {
+    const rawCart = localStorage.getItem('shopCart');
+    return rawCart ? JSON.parse(rawCart) : [];
+  }
+
+  saveCart(cart: CartItem[]): void {
+    localStorage.setItem('shopCart', JSON.stringify(cart));
+    this.syncCartState();
+  }
+
+  syncCartState(): void {
+    this.cartItems = this.getCart();
+    this.cartCount = this.cartItems.reduce((total, item) => total + item.quantity, 0);
+  }
+
+  getProductQuantity(productId: string): number {
+    return this.cartItems.find(item => item.id === productId)?.quantity ?? 0;
+  }
+
+  get cartSubtotal(): number {
+    return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   }
 
   goBack(): void {
     this.router.navigate(['/principal']);
+  }
+
+  goToCheckout(): void {
+    this.router.navigate(['/products/checkout']);
   }
 
   getStockStatus(stock: number | undefined): 'unknown' | 'out' | 'low' | 'in' {
@@ -266,20 +281,10 @@ export class ProductsComponent implements OnInit {
 
   get activeFiltersCount(): number {
     let count = 0;
-
-    if (this.searchControl.value.trim()) {
-      count += 1;
-    }
-    if (this.categoryFilter.value !== 'all') {
-      count += 1;
-    }
-    if (this.stockFilter.value !== 'all') {
-      count += 1;
-    }
-    if (this.sortControl.value !== 'createdAt:desc') {
-      count += 1;
-    }
-
+    if (this.searchControl.value.trim()) count += 1;
+    if (this.categoryFilter.value !== 'all') count += 1;
+    if (this.stockFilter.value !== 'all') count += 1;
+    if (this.sortControl.value !== 'createdAt:desc') count += 1;
     return count;
   }
 }

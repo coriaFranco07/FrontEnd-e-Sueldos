@@ -1,4 +1,15 @@
 /* Wrapper del input */
+.auth-logo {
+  width: 220px;
+  height: 56px;
+  display: block;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.14);
+  padding: 10px 16px;
+  background: #fff;
+}
+
 .input-wrapper {
   display: flex;
   flex-direction: column;

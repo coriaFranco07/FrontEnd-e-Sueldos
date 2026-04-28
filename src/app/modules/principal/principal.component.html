@@ -1,33 +1,45 @@
 <div class="principal-shell">
 
-  <header class="topbar">
+  <header class="navbar">
+    <div class="navbar-inner">
+      <div class="brand-block">
+        <a class="brand-logo" routerLink="/principal" aria-label="Ir al inicio">
+          <img
+            src="https://media.licdn.com/dms/image/v2/D4D0BAQGibhoMeCL-mg/company-logo_200_200/company-logo_200_200/0/1667320508791/e_sueldos_logo?e=2147483647&v=beta&t=6BpHD4ZVbBNymqB5aEkJNEXyJ-0qGr2At_F6mEePRAw"
+            alt="Logo eSueldos"
+          >
+        </a>
 
-    <div class="brand-block">
-      <div class="brand-logo">
-        <img
-          src="https://media.licdn.com/dms/image/v2/D4D0BAQGibhoMeCL-mg/company-logo_200_200/company-logo_200_200/0/1667320508791/e_sueldos_logo?e=2147483647&v=beta&t=6BpHD4ZVbBNymqB5aEkJNEXyJ-0qGr2At_F6mEePRAw"
-          alt="Logo eSueldos"
-        >
+        <div>
+          <p class="brand-kicker">Plataforma empresarial</p>
+          <h1 class="brand-title">eSueldos</h1>
+        </div>
       </div>
 
-      <div>
-        <p class="brand-kicker">Plataforma empresarial</p>
-        <h1 class="brand-title">eSueldos</h1>
-      </div>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a routerLink="/users" routerLinkActive="active-link">
+          <mat-icon>groups</mat-icon>
+          Usuarios
+        </a>
+        <a [routerLink]="productsRoute" routerLinkActive="active-link">
+          <mat-icon>inventory_2</mat-icon>
+          Productos
+        </a>
+        <a routerLink="/profile" routerLinkActive="active-link">
+          <mat-icon>person</mat-icon>
+          Perfil
+        </a>
+      </nav>
+
+      <nav class="topbar-actions">
+
+
+        <a mat-flat-button routerLink="/auth/login" class="header-button danger-button">
+          <mat-icon>logout</mat-icon>
+          Salir
+        </a>
+      </nav>
     </div>
-
-    <nav class="topbar-actions">
-      <a mat-stroked-button routerLink="/profile" class="header-button secondary-button">
-        <mat-icon>person</mat-icon>
-        Mi perfil
-      </a>
-
-      <a mat-flat-button routerLink="/auth/login" class="header-button danger-button">
-        <mat-icon>logout</mat-icon>
-        Salir
-      </a>
-    </nav>
-
   </header>
 
   <main class="dashboard-layout">
@@ -51,7 +63,7 @@
             Administrar usuarios
           </a>
 
-          <a mat-stroked-button routerLink="/products" class="hero-secondary">
+          <a mat-stroked-button [routerLink]="productsRoute" class="hero-secondary">
             <mat-icon>inventory_2</mat-icon>
             Ver productos
           </a>
@@ -75,8 +87,6 @@
               <p>Altas, edición y control de accesos.</p>
             </div>
           </article>
-
-
         </div>
       </div>
     </section>
@@ -114,7 +124,6 @@
       </div>
 
       <div class="access-grid">
-
         <mat-card routerLink="/profile" class="access-card profile-card">
           <div class="access-icon">
             <mat-icon>person</mat-icon>
@@ -133,7 +142,7 @@
           </div>
         </mat-card>
 
-        <mat-card routerLink="/products" class="access-card products-card">
+        <mat-card [routerLink]="productsRoute" class="access-card products-card">
           <div class="access-icon">
             <mat-icon>inventory_2</mat-icon>
           </div>
@@ -168,7 +177,6 @@
             <mat-icon>north_east</mat-icon>
           </div>
         </mat-card>
-
       </div>
     </section>
 

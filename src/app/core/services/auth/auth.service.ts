@@ -41,6 +41,13 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+  public hasValidSession(): boolean {
+    const token = localStorage.getItem('accessToken');
+    const user = this.currentUserSubject.value;
+
+    return Boolean(token && user);
+  }
+
   // Lógica del Login
   login(email: string, password: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, { email, password })
@@ -90,6 +97,9 @@ export class AuthService {
     const token = localStorage.getItem('accessToken');
     if (userJson && token) {
       this.currentUserSubject.next(JSON.parse(userJson));
+      return;
     }
+
+    this.currentUserSubject.next(null);
   }
 }

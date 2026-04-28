@@ -1,0 +1,167 @@
+<div class="dialog-wrapper">
+  <form [formGroup]="productForm" class="product-dialog-form">
+
+    <div class="dialog-header">
+      <div class="dialog-header-left">
+        <div class="dialog-icon" [class.edit]="isEditMode">
+          <mat-icon>{{ isEditMode ? 'edit' : 'add_shopping_cart' }}</mat-icon>
+        </div>
+        <div>
+          <h2 class="dialog-title">{{ title }}</h2>
+          <p class="dialog-subtitle">Completa los datos del producto</p>
+        </div>
+      </div>
+    </div>
+
+    <mat-dialog-content class="dialog-content">
+      <div class="form-field full-width">
+        <label class="form-label" for="product-name">Nombre del producto</label>
+        <div class="form-control" [class.invalid]="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+          <mat-icon class="form-icon">inventory_2</mat-icon>
+          <input
+            id="product-name"
+            class="form-input"
+            type="text"
+            formControlName="name"
+            placeholder="Ej. Auriculares Bluetooth"
+          >
+        </div>
+        <div class="field-error" *ngIf="productForm.get('name')?.hasError('required') && productForm.get('name')?.touched">
+          El nombre es obligatorio
+        </div>
+        <div class="field-error" *ngIf="productForm.get('name')?.hasError('minlength') && productForm.get('name')?.touched">
+          Minimo 2 caracteres
+        </div>
+      </div>
+
+      <div class="two-cols">
+        <div class="form-field">
+          <label class="form-label" for="product-price">Precio ($)</label>
+          <div class="form-control" [class.invalid]="productForm.get('price')?.invalid && productForm.get('price')?.touched">
+            <mat-icon class="form-icon">attach_money</mat-icon>
+            <input
+              id="product-price"
+              class="form-input"
+              type="text"
+              inputmode="decimal"
+              formControlName="price"
+              placeholder="0.00"
+            >
+          </div>
+          <div class="field-error" *ngIf="productForm.get('price')?.hasError('required') && productForm.get('price')?.touched">
+            El precio es obligatorio
+          </div>
+          <div class="field-error" *ngIf="productForm.get('price')?.hasError('pattern') && productForm.get('price')?.touched">
+            Ingresa un precio valido
+          </div>
+          <div class="field-error" *ngIf="productForm.get('price')?.hasError('min') && productForm.get('price')?.touched">
+            El precio no puede ser negativo
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="product-stock">Stock</label>
+          <div class="form-control" [class.invalid]="productForm.get('stock')?.invalid && productForm.get('stock')?.touched">
+            <mat-icon class="form-icon">warehouse</mat-icon>
+            <input
+              id="product-stock"
+              class="form-input"
+              type="text"
+              inputmode="numeric"
+              formControlName="stock"
+              placeholder="0"
+            >
+          </div>
+          <div class="field-error" *ngIf="productForm.get('stock')?.hasError('min') && productForm.get('stock')?.touched">
+            El stock no puede ser negativo
+          </div>
+          <div class="field-error" *ngIf="productForm.get('stock')?.hasError('pattern') && productForm.get('stock')?.touched">
+            Ingresa un stock valido
+          </div>
+        </div>
+      </div>
+
+      <div class="form-field full-width">
+        <label class="form-label" for="product-category">Categoria</label>
+        <div class="form-control select-control">
+          <mat-icon class="form-icon">category</mat-icon>
+          <select
+            id="product-category"
+            class="form-select"
+            formControlName="category"
+            aria-label="Categoria del producto"
+          >
+            <option value="">Sin categoria</option>
+            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+          </select>
+          <mat-icon class="select-arrow" aria-hidden="true">expand_more</mat-icon>
+        </div>
+      </div>
+
+      <div class="form-field full-width">
+        <label class="form-label" for="product-description">Descripcion</label>
+        <div class="form-control textarea-control">
+          <mat-icon class="form-icon textarea-icon">description</mat-icon>
+          <textarea
+            id="product-description"
+            class="form-input form-textarea"
+            formControlName="description"
+            rows="3"
+            placeholder="Descripcion del producto..."
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="image-field">
+        <div class="image-field-header">
+          <div>
+            <p class="image-field-title">Imagen</p>
+            <span class="image-field-hint">
+              {{ isEditMode ? 'Podes mantener la imagen actual o reemplazarla con una nueva.' : 'Selecciona una imagen para el producto.' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="image-preview-card" [class.has-image]="displayedImageUrl">
+          <img *ngIf="displayedImageUrl; else imagePlaceholder" [src]="displayedImageUrl" [alt]="productForm.get('name')?.value || 'Preview del producto'">
+          <ng-template #imagePlaceholder>
+            <div class="image-preview-placeholder">
+              <mat-icon>image</mat-icon>
+              <p>Sin imagen seleccionada</p>
+            </div>
+          </ng-template>
+        </div>
+
+        <label class="image-upload-box" [class.loading]="isLoading">
+          <input type="file" accept="image/*" (change)="onImageSelected($event)" [disabled]="isLoading">
+          <mat-icon>upload_file</mat-icon>
+          <div>
+            <strong>{{ selectedImageFile ? selectedImageFile.name : 'Seleccionar imagen' }}</strong>
+            <span>Formatos permitidos: JPG, PNG, WEBP, GIF</span>
+          </div>
+        </label>
+
+        <p *ngIf="currentImageUrl && !previewUrl" class="image-current-note">
+          Se mostrara la imagen actual guardada hasta que elijas una nueva.
+        </p>
+        <p *ngIf="previewUrl" class="image-current-note">
+          Vista previa local lista para subir.
+        </p>
+        <p *ngIf="imageError" class="image-error">
+          {{ imageError }}
+        </p>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="dialog-actions">
+      <button mat-button type="button" (click)="dialogRef.close()" [disabled]="isLoading" class="btn-cancel">
+        <mat-icon>close</mat-icon> Cancelar
+      </button>
+      <button mat-flat-button type="button" (click)="submit()" [disabled]="productForm.invalid || isLoading" class="btn-submit">
+        <mat-spinner *ngIf="isLoading" diameter="18" class="inline-spinner"></mat-spinner>
+        <mat-icon *ngIf="!isLoading">{{ isEditMode ? 'save' : 'add_circle' }}</mat-icon>
+        {{ submitLabel }}
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

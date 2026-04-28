@@ -1,176 +1,166 @@
-<div class="profile-container">
+<div class="profile-shell">
+  <header class="navbar">
+    <div class="navbar-inner">
+      <div class="brand-block">
+        <a class="brand-logo" routerLink="/principal" aria-label="Ir al inicio">
+          <img
+            src="https://media.licdn.com/dms/image/v2/D4D0BAQGibhoMeCL-mg/company-logo_200_200/company-logo_200_200/0/1667320508791/e_sueldos_logo?e=2147483647&v=beta&t=6BpHD4ZVbBNymqB5aEkJNEXyJ-0qGr2At_F6mEePRAw"
+            alt="Logo eSueldos"
+          >
+        </a>
 
-  <!-- Header -->
-  <div class="profile-header">
-    <div class="header-left">
-      <div class="avatar">
-        <mat-icon>person</mat-icon>
+        <div>
+          <p class="brand-kicker">Plataforma empresarial</p>
+          <h1 class="brand-title">eSueldos</h1>
+        </div>
       </div>
 
-      <div>
-        <h2 class="profile-title">Mi Perfil</h2>
-        <p class="profile-subtitle">Gestiona tu información personal</p>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a routerLink="/principal">
+          <mat-icon>space_dashboard</mat-icon>
+          Inicio
+        </a>
+        <a routerLink="/products">
+          <mat-icon>inventory_2</mat-icon>
+          Productos
+        </a>
+        <a routerLink="/users">
+          <mat-icon>groups</mat-icon>
+          Usuarios
+        </a>
+      </nav>
+
+      <nav class="topbar-actions">
+        <button mat-stroked-button (click)="goBack()" class="header-button secondary-button">
+          <mat-icon>arrow_back</mat-icon>
+          Volver
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="header-left">
+        <div class="avatar">
+          <mat-icon>person</mat-icon>
+        </div>
+
+        <div>
+          <h2 class="profile-title">Mi Perfil</h2>
+          <p class="profile-subtitle">Gestiona tu información personal</p>
+        </div>
       </div>
     </div>
 
-    <button mat-stroked-button (click)="goBack()" class="back-btn-profile">
-      <mat-icon>arrow_back</mat-icon>
-      Volver
-    </button>
-  </div>
+    <div *ngIf="loading" class="status-message loading">
+      Cargando información...
+    </div>
 
-  <!-- Loading -->
-  <div *ngIf="loading" class="status-message loading">
-    Cargando información...
-  </div>
+    <div *ngIf="successMessage" class="status-message success">
+      {{ successMessage }}
+    </div>
 
-  <!-- Success -->
-  <div *ngIf="successMessage" class="status-message success">
-    {{ successMessage }}
-  </div>
+    <div *ngIf="errorMessage" class="status-message error">
+      {{ errorMessage }}
+    </div>
 
-  <!-- Error -->
-  <div *ngIf="errorMessage" class="status-message error">
-    {{ errorMessage }}
-  </div>
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <div class="card-section">
+        <h3 class="section-title">
+          <mat-icon>contact_mail</mat-icon>
+          Datos de Contacto
+        </h3>
 
-  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input
+            type="text"
+            formControlName="name"
+            placeholder="Ingresa tu nombre"
+          />
 
-    <!-- Datos de Contacto -->
-    <div class="card-section">
-
-      <h3 class="section-title">
-        <mat-icon>contact_mail</mat-icon>
-        Datos de Contacto
-      </h3>
-
-      <div class="form-group">
-
-        <label>Nombre</label>
-
-        <input
-          type="text"
-          formControlName="name"
-          placeholder="Ingresa tu nombre"
-        />
-
-        <div class="error-text"
-             *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
-
-          El nombre es requerido
-
-        </div>
-
-      </div>
-
-      <div class="form-group">
-
-        <label>Email</label>
-
-        <input
-          type="email"
-          formControlName="email"
-          placeholder="ejemplo@email.com"
-        />
-
-        <div class="error-text"
-             *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
-
-          <div *ngIf="profileForm.get('email')?.errors?.['required']">
-            El email es requerido
+          <div class="error-text" *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
+            El nombre es requerido
           </div>
+        </div>
 
-          <div *ngIf="profileForm.get('email')?.errors?.['email']">
-            Formato de email inválido
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="ejemplo@email.com"
+          />
+
+          <div class="error-text" *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+            <div *ngIf="profileForm.get('email')?.errors?.['required']">
+              El email es requerido
+            </div>
+
+            <div *ngIf="profileForm.get('email')?.errors?.['email']">
+              Formato de email inválido
+            </div>
           </div>
+        </div>
+      </div>
 
+      <div class="card-section">
+        <h3 class="section-title">
+          <mat-icon>lock</mat-icon>
+          Cambiar Contraseña
+        </h3>
+
+        <div class="form-group">
+          <label>Nueva Contraseña</label>
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Nueva contraseña"
+          />
+
+          <div class="error-text" *ngIf="profileForm.get('password')?.invalid && profileForm.get('password')?.touched">
+            La contraseña debe tener al menos 8 caracteres
+          </div>
         </div>
 
+        <div class="form-group">
+          <label>Confirmar Contraseña</label>
+          <input
+            type="password"
+            formControlName="confirmPassword"
+            placeholder="Confirmar contraseña"
+          />
+
+          <div class="error-text" *ngIf="profileForm.errors?.['passwordMismatch'] && profileForm.get('confirmPassword')?.touched">
+            Las contraseñas no coinciden
+          </div>
+        </div>
       </div>
 
-    </div>
+      <div class="card-section info-box">
+        <h3 class="section-title">
+          <mat-icon>info</mat-icon>
+          Información del Usuario
+        </h3>
 
-    <!-- Contraseña -->
-    <div class="card-section">
-
-      <h3 class="section-title">
-        <mat-icon>lock</mat-icon>
-        Cambiar Contraseña
-      </h3>
-
-      <div class="form-group">
-
-        <label>Nueva Contraseña</label>
-
-        <input
-          type="password"
-          formControlName="password"
-          placeholder="Nueva contraseña"
-        />
-
-        <div class="error-text"
-             *ngIf="profileForm.get('password')?.invalid && profileForm.get('password')?.touched">
-
-          La contraseña debe tener al menos 8 caracteres
-
+        <div class="info-row">
+          <span>Rol:</span>
+          <strong>{{ user?.role }}</strong>
         </div>
 
-      </div>
-
-      <div class="form-group">
-
-        <label>Confirmar Contraseña</label>
-
-        <input
-          type="password"
-          formControlName="confirmPassword"
-          placeholder="Confirmar contraseña"
-        />
-
-        <div class="error-text"
-             *ngIf="profileForm.errors?.['passwordMismatch']
-             && profileForm.get('confirmPassword')?.touched">
-
-          Las contraseñas no coinciden
-
+        <div class="info-row">
+          <span>Email Verificado:</span>
+          <strong>{{ user?.isEmailVerified ? 'Sí' : 'No' }}</strong>
         </div>
-
       </div>
 
-    </div>
-
-    <!-- Info -->
-    <div class="card-section info-box">
-
-      <h3 class="section-title">
-        <mat-icon>info</mat-icon>
-        Información del Usuario
-      </h3>
-
-      <div class="info-row">
-        <span>Rol:</span>
-        <strong>{{ user?.role }}</strong>
-      </div>
-
-      <div class="info-row">
-        <span>Email Verificado:</span>
-        <strong>
-          {{ user?.isEmailVerified ? 'Sí' : 'No' }}
-        </strong>
-      </div>
-
-    </div>
-
-    <!-- Botón -->
-    <button
-      type="submit"
-      [disabled]="profileForm.invalid || loading"
-      class="save-btn">
-
-      {{ loading ? 'Guardando...' : 'Guardar Cambios' }}
-
-    </button>
-
-  </form>
-
+      <button
+        type="submit"
+        [disabled]="profileForm.invalid || loading"
+        class="save-btn">
+        {{ loading ? 'Guardando...' : 'Guardar Cambios' }}
+      </button>
+    </form>
+  </div>
 </div>

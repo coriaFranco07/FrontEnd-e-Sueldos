@@ -8,109 +8,119 @@
     </div>
 
     <mat-dialog-content>
+      <ng-container *ngIf="!isFetchingUser; else loadingState">
+        <div class="form-section">
+          <div class="section-label">Informacion Personal</div>
 
-      <!-- SECCIÓN: Información Personal -->
-      <div class="form-section">
-        <div class="section-label">Información Personal</div>
+          <mat-form-field appearance="fill" class="full-width form-field-custom">
+            <mat-label>Nombre completo</mat-label>
+            <input matInput formControlName="name" placeholder="Ej. Juan Perez">
+            <mat-icon matPrefix class="prefix-icon">person</mat-icon>
+          </mat-form-field>
+          <mat-error *ngIf="userForm.get('name')?.hasError('required') && userForm.get('name')?.touched" class="error-message">
+            El nombre es obligatorio
+          </mat-error>
+          <mat-error *ngIf="userForm.get('name')?.hasError('minlength') && userForm.get('name')?.touched" class="error-message">
+            Minimo 3 caracteres
+          </mat-error>
 
-        <mat-form-field appearance="fill" class="full-width form-field-custom">
-          <mat-label>Nombre completo</mat-label>
-          <input matInput formControlName="name" placeholder="Ej. Juan Perez">
-          <mat-icon matPrefix class="prefix-icon">person</mat-icon>
-        </mat-form-field>
-        <mat-error *ngIf="userForm.get('name')?.hasError('required') && userForm.get('name')?.touched" class="error-message">
-          El nombre es obligatorio
-        </mat-error>
-        <mat-error *ngIf="userForm.get('name')?.hasError('minlength') && userForm.get('name')?.touched" class="error-message">
-          Mínimo 3 caracteres
-        </mat-error>
-
-        <mat-form-field appearance="fill" class="full-width form-field-custom">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" placeholder="Ej. juan@ejemplo.com" type="email">
-          <mat-icon matPrefix class="prefix-icon">email</mat-icon>
-        </mat-form-field>
-        <mat-error *ngIf="userForm.get('email')?.hasError('required') && userForm.get('email')?.touched" class="error-message">
-          El email es obligatorio
-        </mat-error>
-        <mat-error *ngIf="userForm.get('email')?.hasError('email') && userForm.get('email')?.touched" class="error-message">
-          Ingresa un email válido
-        </mat-error>
-      </div>
-
-      <!-- SECCIÓN: Contraseña (siempre visible, opcional en edición) -->
-      <div class="form-section">
-        <div class="section-label">
-          {{ isEditMode ? 'Cambiar Contraseña (opcional)' : 'Credenciales de Seguridad' }}
+          <mat-form-field appearance="fill" class="full-width form-field-custom">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" placeholder="Ej. juan@ejemplo.com" type="email">
+            <mat-icon matPrefix class="prefix-icon">email</mat-icon>
+          </mat-form-field>
+          <mat-error *ngIf="userForm.get('email')?.hasError('required') && userForm.get('email')?.touched" class="error-message">
+            El email es obligatorio
+          </mat-error>
+          <mat-error *ngIf="userForm.get('email')?.hasError('email') && userForm.get('email')?.touched" class="error-message">
+            Ingresa un email valido
+          </mat-error>
         </div>
 
-        <p *ngIf="isEditMode" class="section-hint">
-          Dejá en blanco si no querés cambiar la contraseña actual.
-        </p>
+        <div class="form-section">
+          <div class="section-label">
+            {{ isEditMode ? 'Cambiar Contrasena (opcional)' : 'Credenciales de Seguridad' }}
+          </div>
 
-        <mat-form-field appearance="fill" class="full-width form-field-custom">
-          <mat-label>{{ isEditMode ? 'Nueva contraseña' : 'Contraseña' }}</mat-label>
-          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
-                 placeholder="Mínimo 8 caracteres, letra y número">
-          <mat-icon matPrefix class="prefix-icon">lock</mat-icon>
-          <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword" class="toggle-password">
-            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
-        </mat-form-field>
-        <mat-error *ngIf="userForm.get('password')?.hasError('required') && userForm.get('password')?.touched" class="error-message">
-          La contraseña es obligatoria
-        </mat-error>
-        <mat-error *ngIf="userForm.get('password')?.hasError('pattern') && userForm.get('password')?.touched" class="error-message">
-          Mínimo 8 caracteres, con letra y número
-        </mat-error>
+          <p *ngIf="isEditMode" class="section-hint">
+            Deja en blanco si no queres cambiar la contrasena actual.
+          </p>
 
-        <mat-form-field appearance="fill" class="full-width form-field-custom">
-          <mat-label>Confirmar contraseña</mat-label>
-          <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword"
-                 placeholder="Repite la contraseña">
-          <mat-icon matPrefix class="prefix-icon">lock_outline</mat-icon>
-          <button mat-icon-button matSuffix type="button" (click)="hideConfirmPassword = !hideConfirmPassword" class="toggle-password">
-            <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
-        </mat-form-field>
-        <mat-error *ngIf="userForm.get('confirmPassword')?.hasError('required') && userForm.get('confirmPassword')?.touched" class="error-message">
-          Debe confirmar la contraseña
-        </mat-error>
-        <mat-error *ngIf="userForm.hasError('passwordMismatch') && userForm.get('confirmPassword')?.touched" class="error-message">
-          Las contraseñas no coinciden
-        </mat-error>
-      </div>
+          <mat-form-field appearance="fill" class="full-width form-field-custom">
+            <mat-label>{{ isEditMode ? 'Nueva contrasena' : 'Contrasena' }}</mat-label>
+            <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+                   placeholder="Minimo 8 caracteres, letra y numero">
+            <mat-icon matPrefix class="prefix-icon">lock</mat-icon>
+            <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword" class="toggle-password">
+              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-error *ngIf="userForm.get('password')?.hasError('required') && userForm.get('password')?.touched" class="error-message">
+            La contrasena es obligatoria
+          </mat-error>
+          <mat-error *ngIf="userForm.get('password')?.hasError('pattern') && userForm.get('password')?.touched" class="error-message">
+            Minimo 8 caracteres, con letra y numero
+          </mat-error>
+          <mat-error *ngIf="userForm.hasError('passwordRequired') && userForm.get('confirmPassword')?.touched" class="error-message">
+            Ingresa una contrasena antes de confirmarla
+          </mat-error>
 
-      <!-- SECCIÓN: Rol (siempre visible) -->
-      <div class="form-section">
-        <div class="section-label">Configuración de Rol</div>
+          <mat-form-field appearance="fill" class="full-width form-field-custom">
+            <mat-label>Confirmar contrasena</mat-label>
+            <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword"
+                   placeholder="Repite la contrasena">
+            <mat-icon matPrefix class="prefix-icon">lock_outline</mat-icon>
+            <button mat-icon-button matSuffix type="button" (click)="hideConfirmPassword = !hideConfirmPassword" class="toggle-password">
+              <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-error *ngIf="userForm.get('confirmPassword')?.hasError('required') && userForm.get('confirmPassword')?.touched" class="error-message">
+            Debe confirmar la contrasena
+          </mat-error>
+          <mat-error *ngIf="userForm.hasError('confirmPasswordRequired') && userForm.get('password')?.touched" class="error-message">
+            Debe confirmar la nueva contrasena
+          </mat-error>
+          <mat-error *ngIf="userForm.hasError('passwordMismatch') && userForm.get('confirmPassword')?.touched" class="error-message">
+            Las contrasenas no coinciden
+          </mat-error>
+        </div>
 
-        <mat-form-field appearance="fill" class="full-width form-field-custom">
-          <mat-label>Rol de Usuario</mat-label>
-          <mat-select formControlName="role">
-            <mat-option value="user">
-              <mat-icon style="vertical-align:middle;margin-right:6px;">person</mat-icon>
-              Usuario Regular
-            </mat-option>
-            <mat-option value="admin">
-              <mat-icon style="vertical-align:middle;margin-right:6px;">admin_panel_settings</mat-icon>
-              Administrador
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-error *ngIf="userForm.get('role')?.hasError('required') && userForm.get('role')?.touched" class="error-message">
-          El rol es obligatorio
-        </mat-error>
-      </div>
+        <div class="form-section" *ngIf="canManageRole">
+          <div class="section-label">Configuracion de Rol</div>
 
+          <mat-form-field appearance="fill" class="full-width form-field-custom">
+            <mat-label>Rol de Usuario</mat-label>
+            <mat-select formControlName="role">
+              <mat-option value="user">
+                <mat-icon style="vertical-align:middle;margin-right:6px;">person</mat-icon>
+                Usuario Regular
+              </mat-option>
+              <mat-option value="admin">
+                <mat-icon style="vertical-align:middle;margin-right:6px;">admin_panel_settings</mat-icon>
+                Administrador
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-error *ngIf="userForm.get('role')?.hasError('required') && userForm.get('role')?.touched" class="error-message">
+            El rol es obligatorio
+          </mat-error>
+        </div>
+      </ng-container>
+
+      <ng-template #loadingState>
+        <div class="loading-state">
+          <mat-spinner diameter="36"></mat-spinner>
+          <p>Cargando datos del usuario...</p>
+        </div>
+      </ng-template>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end" class="dialog-actions">
-      <button mat-button type="button" (click)="dialogRef.close()" [disabled]="isLoading" class="btn-cancel">
+      <button mat-button type="button" (click)="dialogRef.close()" [disabled]="isBusy" class="btn-cancel">
         <mat-icon>close</mat-icon>
         Cancelar
       </button>
-      <button mat-flat-button type="button" [disabled]="userForm.invalid || isLoading" (click)="submit()" class="btn-submit">
+      <button mat-flat-button type="button" [disabled]="userForm.invalid || isBusy" (click)="submit()" class="btn-submit">
         <mat-icon *ngIf="!isLoading">{{ isEditMode ? 'edit' : 'check_circle' }}</mat-icon>
         <mat-spinner *ngIf="isLoading" diameter="20" class="spinner"></mat-spinner>
         {{ submitLabel }}

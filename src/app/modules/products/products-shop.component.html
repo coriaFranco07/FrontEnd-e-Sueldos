@@ -1,4 +1,4 @@
-<div class="amz-topbar">
+<div class="amz-topbar shop-topbar">
   <div class="amz-topbar-inner">
     <div class="amz-logo" (click)="goBack()">
       <img
@@ -24,13 +24,9 @@
         <mat-icon>space_dashboard</mat-icon>
         Inicio
       </a>
-      <a mat-stroked-button routerLink="/users" class="amz-nav-btn">
-        <mat-icon>groups</mat-icon>
-        Usuarios
-      </a>
       <a mat-stroked-button routerLink="/profile" class="amz-nav-btn">
         <mat-icon>person</mat-icon>
-        Profile
+        Perfil
       </a>
     </div>
 
@@ -38,10 +34,6 @@
       <button mat-button class="amz-back-btn" (click)="goBack()">
         <mat-icon>arrow_back</mat-icon>
         Volver
-      </button>
-      <button mat-flat-button class="amz-add-btn" (click)="openCreateDialog()">
-        <mat-icon>add</mat-icon>
-        Agregar producto
       </button>
     </div>
   </div>
@@ -52,7 +44,7 @@
     <div class="amz-breadcrumb">
       <span (click)="goBack()" class="breadcrumb-link">Inicio</span>
       <mat-icon class="breadcrumb-sep">chevron_right</mat-icon>
-      <span class="breadcrumb-current">Productos</span>
+      <span class="breadcrumb-current">Comprar productos</span>
     </div>
     <div class="amz-stats">
       <div class="stat-pill">
@@ -60,23 +52,20 @@
         <strong>{{ totalResults }}</strong> productos
       </div>
       <div class="stat-pill">
-        <mat-icon>filter_alt</mat-icon>
-        <span>{{ activeFiltersCount }} filtro{{ activeFiltersCount !== 1 ? 's' : '' }} activo{{ activeFiltersCount !== 1 ? 's' : '' }}</span>
+        <mat-icon>shopping_bag</mat-icon>
+        Comprá de forma simple y rápida
       </div>
     </div>
   </div>
 </div>
 
-<div class="amz-main">
+<div class="amz-main shop-layout">
   <aside class="amz-sidebar">
     <div class="sidebar-section">
-      <h4>Departamentos</h4>
+      <h4>Categorías</h4>
       <ul>
         <li [class.active]="categoryFilter.value === 'all'" (click)="categoryFilter.setValue('all')">Todos los productos</li>
-        <li
-          *ngFor="let category of categories"
-          [class.active]="categoryFilter.value === category"
-          (click)="categoryFilter.setValue(category)">
+        <li *ngFor="let category of categories" [class.active]="categoryFilter.value === category" (click)="categoryFilter.setValue(category)">
           {{ category }}
         </li>
       </ul>
@@ -151,21 +140,13 @@
         </div>
 
         <div class="product-image-wrap">
-          <img *ngIf="getProductImageUrl(product) as imageUrl; else adminPlaceholder" class="product-image" [src]="imageUrl" [alt]="product.name">
-          <ng-template #adminPlaceholder>
+          <img *ngIf="getProductImageUrl(product) as imageUrl; else shopPlaceholder" class="product-image" [src]="imageUrl" [alt]="product.name">
+          <ng-template #shopPlaceholder>
             <div class="product-img-placeholder">
               <mat-icon>image_not_supported</mat-icon>
             </div>
           </ng-template>
           <div class="product-image-label">Imagen</div>
-          <div class="product-overlay">
-            <button mat-icon-button class="overlay-btn edit-btn" (click)="editProduct(product)" matTooltip="Editar">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button class="overlay-btn delete-btn" (click)="deleteProduct(product)" matTooltip="Eliminar">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
         </div>
 
         <div class="product-info">
@@ -194,24 +175,50 @@
           </div>
         </div>
 
+        <div class="product-actions product-actions-shop">
+          <button
+            *ngIf="getProductQuantity(product.id) === 0"
+            mat-flat-button
+            class="btn-cart"
+            (click)="addToCart(product)"
+            [disabled]="getStockStatus(product.stock) === 'out'">
+            <mat-icon>add_shopping_cart</mat-icon>
+            {{ getStockStatus(product.stock) === 'out' ? 'Sin stock' : 'Agregar al carrito' }}
+          </button>
+
+          <div *ngIf="getProductQuantity(product.id) > 0" class="cart-controls">
+            <div class="qty-stepper">
+              <button mat-icon-button type="button" (click)="decrementQuantity(product)">
+                <mat-icon>remove</mat-icon>
+              </button>
+              <span>{{ getProductQuantity(product.id) }}</span>
+              <button
+                mat-icon-button
+                type="button"
+                (click)="incrementQuantity(product)"
+                [disabled]="getStockStatus(product.stock) === 'out' || getProductQuantity(product.id) >= (product.stock ?? 999999)">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+
+            <button mat-stroked-button class="btn-remove-cart" type="button" (click)="removeFromCart(product)">
+              <mat-icon>delete_outline</mat-icon>
+              Quitar
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
     <div *ngIf="!isLoading && products.length === 0 && !errorMessage" class="empty-state">
       <div class="empty-icon">
-        <mat-icon>inventory_2</mat-icon>
+        <mat-icon>storefront</mat-icon>
       </div>
       <h3>{{ activeFiltersCount > 0 ? 'No hay resultados para los filtros seleccionados' : 'No hay productos disponibles' }}</h3>
-      <p>
-        {{ activeFiltersCount > 0 ? 'Probá limpiando filtros o usando una búsqueda más amplia.' : 'El catálogo está vacío. Agregá el primer producto.' }}
-      </p>
+      <p>{{ activeFiltersCount > 0 ? 'Probá limpiando filtros o usando una búsqueda más amplia.' : 'Todavía no hay productos disponibles para comprar.' }}</p>
       <button *ngIf="activeFiltersCount > 0" mat-stroked-button class="clear-filters-btn clear-filters-empty" (click)="clearFilters()">
         <mat-icon>filter_alt_off</mat-icon>
         Limpiar filtros
-      </button>
-      <button *ngIf="activeFiltersCount === 0" mat-flat-button class="amz-add-btn" (click)="openCreateDialog()">
-        <mat-icon>add</mat-icon>
-        Agregar primer producto
       </button>
     </div>
 
@@ -226,10 +233,45 @@
       </mat-paginator>
     </div>
   </div>
-</div>
 
-<div class="amz-footer">
-  <div class="footer-inner">
-    <p>© 2024 eSueldos Store - Sistema de gestión de productos</p>
-  </div>
+  <aside class="cart-panel">
+    <div class="cart-panel-header">
+      <div>
+        <p class="cart-kicker">Mi compra</p>
+        <h3>Carrito</h3>
+      </div>
+      <span class="cart-count-pill">{{ cartCount }}</span>
+    </div>
+
+    <div *ngIf="cartItems.length === 0" class="cart-empty">
+      <mat-icon>remove_shopping_cart</mat-icon>
+      <p>Tu carrito está vacío.</p>
+      <span>Agregá productos para empezar tu pedido.</span>
+    </div>
+
+    <div *ngIf="cartItems.length > 0" class="cart-items">
+      <div class="cart-item" *ngFor="let item of cartItems">
+        <div>
+          <p class="cart-item-name">{{ item.name }}</p>
+          <p class="cart-item-meta">{{ item.quantity }} x {{ formatPrice(item.price) }}</p>
+        </div>
+        <strong>{{ formatPrice(item.price * item.quantity) }}</strong>
+      </div>
+    </div>
+
+    <div *ngIf="cartItems.length > 0" class="cart-summary">
+      <div class="cart-summary-row">
+        <span>Subtotal</span>
+        <strong>{{ formatPrice(cartSubtotal) }}</strong>
+      </div>
+      <button mat-flat-button class="cart-checkout-btn" (click)="goToCheckout()">
+        <mat-icon>shopping_bag</mat-icon>
+        Continuar compra
+      </button>
+      <button mat-stroked-button class="cart-clear-btn" (click)="clearCart()">
+        <mat-icon>delete_sweep</mat-icon>
+        Vaciar carrito
+      </button>
+    </div>
+  </aside>
 </div>

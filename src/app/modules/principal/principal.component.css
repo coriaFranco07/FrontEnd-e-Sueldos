@@ -7,9 +7,16 @@
     linear-gradient(180deg, #eef4ff 0%, #f8fbff 46%, #edf3fb 100%);
 }
 
-.topbar {
+.navbar {
+  position: sticky;
+  top: 16px;
+  z-index: 20;
+  margin-bottom: 24px;
+}
+
+.navbar-inner {
   max-width: 1240px;
-  margin: 0 auto 24px;
+  margin: 0 auto;
   padding: 18px 22px;
   display: flex;
   align-items: center;
@@ -29,18 +36,21 @@
 }
 
 .brand-logo {
-  width: 58px;
-  height: 58px;
-  border-radius: 18px;
+  width: 180px;
+  height: 56px;
+  border-radius: 16px;
   overflow: hidden;
   background: #fff;
   box-shadow: 0 10px 24px rgba(37, 99, 235, 0.16);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
 }
 
 .brand-logo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
@@ -59,6 +69,47 @@
   line-height: 1;
   font-weight: 800;
   color: var(--text-main);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-links a {
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #475569;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid transparent;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-links a:hover {
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+  border-color: rgba(37, 99, 235, 0.12);
+  transform: translateY(-1px);
+}
+
+.nav-links a.active-link {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.22);
+}
+
+.nav-links mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
 }
 
 .topbar-actions {
@@ -426,11 +477,25 @@
     padding: 16px;
   }
 
-  .topbar {
+  .navbar {
+    top: 10px;
+  }
+
+  .navbar-inner {
     padding: 18px;
     border-radius: 24px;
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .nav-links a {
+    flex: 1 1 140px;
+    justify-content: center;
   }
 
   .topbar-actions {
@@ -444,6 +509,11 @@
 
   .brand-title {
     font-size: 24px;
+  }
+
+  .brand-logo {
+    width: 150px;
+    height: 48px;
   }
 
   .hero-panel {
@@ -478,6 +548,21 @@
 
 :host-context(.dark-theme) .section-heading h2 {
   color: var(--text-main);
+}
+
+:host-context(.dark-theme) .nav-links a {
+  color: #cbd5e1;
+}
+
+:host-context(.dark-theme) .nav-links a:hover {
+  background: rgba(96, 165, 250, 0.12);
+  color: #bfdbfe;
+  border-color: rgba(96, 165, 250, 0.18);
+}
+
+:host-context(.dark-theme) .nav-links a.active-link {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
 }
 
 :host-context(.dark-theme) ::ng-deep .secondary-button {

@@ -39,6 +39,23 @@
   font-style: italic;
 }
 
+.loading-state {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: #4b5563;
+  text-align: center;
+}
+
+.loading-state p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
 .header-icon {
   font-size: 32px;
   width: 32px;
@@ -148,7 +165,6 @@ mat-form-field {
   width: 100%;
 }
 
-/* Dialog actions */
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
@@ -192,13 +208,11 @@ mat-dialog-actions button {
   box-shadow: none;
 }
 
-/* Spinner */
 .spinner {
   display: inline-block;
   margin-right: 8px;
 }
 
-/* Scrollbar personalizado */
 mat-dialog-content::-webkit-scrollbar {
   width: 6px;
 }
@@ -217,7 +231,6 @@ mat-dialog-content::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
 }
 
-/* Responsive */
 @media (max-width: 600px) {
   mat-dialog-content {
     min-width: auto;

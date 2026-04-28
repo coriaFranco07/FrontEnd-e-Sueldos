@@ -1,0 +1,74 @@
+<div class="checkout-shell">
+  <header class="checkout-navbar">
+    <div class="checkout-navbar-inner">
+      <div class="checkout-brand" (click)="goBack()">
+        <img
+          src="https://media.licdn.com/dms/image/v2/D4D0BAQGibhoMeCL-mg/company-logo_200_200/company-logo_200_200/0/1667320508791/e_sueldos_logo?e=2147483647&v=beta&t=6BpHD4ZVbBNymqB5aEkJNEXyJ-0qGr2At_F6mEePRAw"
+          alt="Logo eSueldos">
+      </div>
+
+      <div class="checkout-navbar-actions">
+        <button mat-stroked-button class="checkout-back-btn" (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+          Volver a productos
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="checkout-container">
+    <section class="checkout-main">
+      <div class="checkout-header">
+        <p class="checkout-eyebrow">Resumen de compra</p>
+        <h1>Confirma tu pedido</h1>
+        <p>Revisa productos, cantidades y precios antes de continuar con el pago.</p>
+      </div>
+
+      <div class="checkout-list">
+        <article class="checkout-item" *ngFor="let item of cartItems">
+          <div class="checkout-item-main">
+            <div class="checkout-item-icon">
+              <mat-icon>inventory_2</mat-icon>
+            </div>
+            <div>
+              <h3>{{ item.name }}</h3>
+              <p>{{ item.quantity }} unidad{{ item.quantity !== 1 ? 'es' : '' }} x {{ formatPrice(item.price) }}</p>
+            </div>
+          </div>
+          <strong>{{ formatPrice(item.price * item.quantity) }}</strong>
+        </article>
+      </div>
+    </section>
+
+    <aside class="checkout-summary">
+      <div class="summary-card">
+        <p class="summary-kicker">Tu pedido</p>
+        <h2>{{ totalItems }} producto{{ totalItems !== 1 ? 's' : '' }}</h2>
+
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <strong>{{ formatPrice(subtotal) }}</strong>
+        </div>
+
+        <div class="summary-row">
+          <span>Envio</span>
+          <strong>A coordinar</strong>
+        </div>
+
+        <div class="summary-row total-row">
+          <span>Total estimado</span>
+          <strong>{{ formatPrice(subtotal) }}</strong>
+        </div>
+
+        <button mat-flat-button class="pay-btn" (click)="pay()" [disabled]="isPaying || cartItems.length === 0">
+          <mat-icon *ngIf="!isPaying">credit_card</mat-icon>
+          {{ isPaying ? 'Redirigiendo a Mercado Pago...' : 'Pagar con Mercado Pago' }}
+        </button>
+
+        <p class="summary-note">
+          Vas a ser redirigido al checkout de Mercado Pago para completar el pago.
+        </p>
+      </div>
+    </aside>
+  </div>
+</div>

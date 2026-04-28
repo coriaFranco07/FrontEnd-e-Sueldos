@@ -1,10 +1,126 @@
-.profile-container {
-  max-width: 600px;
-  margin: 40px auto;
+.profile-shell {
+  min-height: 100vh;
   padding: 24px;
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 28%),
+    radial-gradient(circle at right center, rgba(14, 165, 233, 0.16), transparent 24%),
+    linear-gradient(180deg, #eef4ff 0%, #f8fbff 46%, #edf3fb 100%);
 }
 
-/* HEADER */
+.navbar {
+  position: sticky;
+  top: 16px;
+  z-index: 20;
+  margin-bottom: 24px;
+}
+
+.navbar-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 28px;
+  background: var(--bg-surface);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+}
+
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-logo {
+  width: 180px;
+  height: 56px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.16);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+}
+
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.brand-kicker {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.brand-title {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-links a {
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #475569;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid transparent;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-links a:hover {
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+  border-color: rgba(37, 99, 235, 0.12);
+  transform: translateY(-1px);
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-button {
+  height: 44px;
+  border-radius: 14px;
+}
+
+:host ::ng-deep .secondary-button {
+  border-color: #cbd5e1 !important;
+  color: #1e293b !important;
+}
+
+.profile-container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 12px 0 24px;
+}
 
 .profile-header {
   display: flex;
@@ -22,13 +138,11 @@
 .avatar {
   width: 56px;
   height: 56px;
-  background: linear-gradient(135deg,#6366f1,#4f46e5);
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
   border-radius: 50%;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: white;
   font-size: 28px;
 }
@@ -36,37 +150,31 @@
 .profile-title {
   font-size: 24px;
   font-weight: 700;
+  margin: 0;
 }
 
 .profile-subtitle {
   font-size: 13px;
   color: #6b7280;
+  margin: 6px 0 0;
 }
-
-/* CARDS */
 
 .card-section {
   background: white;
   border-radius: 14px;
   padding: 18px;
   margin-bottom: 20px;
-
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
-
-/* TITLES */
 
 .section-title {
   display: flex;
   align-items: center;
   gap: 8px;
-
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 16px;
 }
-
-/* FORM */
 
 .form-group {
   margin-bottom: 16px;
@@ -82,20 +190,16 @@ label {
 input {
   width: 100%;
   padding: 10px 12px;
-
   border-radius: 8px;
   border: 1px solid #d1d5db;
-
   transition: all 0.2s ease;
 }
 
 input:focus {
   border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
   outline: none;
 }
-
-/* INFO */
 
 .info-row {
   display: flex;
@@ -106,8 +210,6 @@ input:focus {
 .info-box {
   background: #f9fafb;
 }
-
-/* STATUS */
 
 .status-message {
   padding: 10px;
@@ -130,34 +232,97 @@ input:focus {
   color: #6b7280;
 }
 
-/* BUTTON */
-
 .save-btn {
   width: 100%;
-
-  background: linear-gradient(
-    135deg,
-    #6366f1,
-    #4f46e5
-  );
-
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
   color: white;
   padding: 12px;
-
   border: none;
   border-radius: 10px;
-
   font-weight: 600;
-
   transition: 0.2s;
 }
 
 .save-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .save-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+@media (max-width: 720px) {
+  .profile-shell {
+    padding: 16px;
+  }
+
+  .navbar {
+    top: 10px;
+  }
+
+  .navbar-inner {
+    padding: 18px;
+    border-radius: 24px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .nav-links a {
+    flex: 1 1 140px;
+    justify-content: center;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .topbar-actions button {
+    width: 100%;
+  }
+
+  .brand-title {
+    font-size: 24px;
+  }
+
+  .brand-logo {
+    width: 150px;
+    height: 48px;
+  }
+
+  .profile-container {
+    padding-top: 8px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+:host-context(.dark-theme) .profile-shell {
+  background: var(--bg-app);
+}
+
+:host-context(.dark-theme) .nav-links a {
+  color: #cbd5e1;
+}
+
+:host-context(.dark-theme) .nav-links a:hover {
+  background: rgba(96, 165, 250, 0.12);
+  color: #bfdbfe;
+  border-color: rgba(96, 165, 250, 0.18);
+}
+
+:host-context(.dark-theme) ::ng-deep .secondary-button {
+  color: white !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
 }
